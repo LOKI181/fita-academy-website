@@ -1,0 +1,46 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
+import { Card, CardContent } from "@/components/ui/card";
+import { SectionHeader } from "@/components/shared/section-header";
+import { CategoryIcon } from "@/components/shared/category-icon";
+import { categories } from "@/lib/content";
+
+export function CategoriesGrid() {
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <SectionHeader
+        eyebrow="Explore by track"
+        title="Career tracks that match your goal"
+        sub="Whether you're starting fresh or upgrading skills — pick a track and we'll build the roadmap with you."
+      />
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {categories.map((cat) => (
+          <Link key={cat.slug} href={`/courses/${cat.slug}`} className="group">
+            <Card className="h-full transition-shadow group-hover:shadow-md">
+              <CardContent className="flex h-full flex-col gap-3 p-6">
+                <span className="grid size-11 place-items-center rounded-xl bg-accent text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <CategoryIcon name={cat.icon} className="size-5" />
+                </span>
+                <div>
+                  <h3 className="font-heading text-base font-bold text-foreground group-hover:text-primary">
+                    {cat.title}
+                  </h3>
+                  <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{cat.blurb}</p>
+                </div>
+                <div className="mt-auto flex items-center justify-between pt-2 text-sm">
+                  <span className="text-xs font-medium text-muted-foreground">
+                    {cat.courses} courses
+                  </span>
+                  <span className="inline-flex items-center gap-1 font-semibold text-primary">
+                    Explore <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
