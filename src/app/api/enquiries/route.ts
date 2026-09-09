@@ -3,6 +3,10 @@ import { z } from "zod";
 import { appendFile, mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
+import { setStore } from "@/lib/store";
+import { sendEmail } from "@/lib/mail";
+import { brand } from "@/lib/content";
+
 const schema = z.object({
   intent: z.enum(["enquiry", "demo", "contact"]).default("enquiry"),
   name: z.string().trim().min(2, "Name is required").max(120),
@@ -70,7 +74,37 @@ export async function POST(req: Request) {
     // Transient persistence is best-effort; never fail the user on storage.
   }
 
+  await setStore((draft) => {
+    draft.enquiries.push(record);
+  });
+
+  // Email notification + CRM webhook (best-effort, never blocks the user).
+  if (record.email) {
+    await sendEmail({
+      to: record.email,
+      subject: `We received your ${intentLabel(record.intent)} — ${brand.name}`,
+      html: `<p>Hi ${record.name},</p><p>Thanks for reaching out to ${brand.name}. A counsellor will call you shortly about your enquiry${record.course ? ` on <strong>${record.course}</strong>` : ""}.</p><p>Need it faster? Call ${brand.phone} or WhatsApp us anytime.</p>`,
+    });
+  }
+  void notifyCrm(record).catch(() => {});
+
   return NextResponse.json({ ok: true });
+}
+
+function intentLabel(v: string) {
+  if (v === "demo") return "demo class request";
+  if (v === "contact") return "message";
+  return "enquiry";
+}
+
+async function notifyCrm(record: Record<string, unknown>) {
+  const webhook = process.env.CRM_WEBHOOK_URL;
+  if (!webhook) return;
+  await fetch(webhook, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ event: "enquiry.created", data: record }),
+  });
 }
 
 export async function GET() {

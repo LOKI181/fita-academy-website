@@ -9,6 +9,7 @@ import { cn } from "cn";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Logo } from "@/components/site/logo";
+import { AuthNav } from "@/components/site/auth-nav";
 import { brand, branches, navLinks } from "@/lib/content";
 
 export function Header() {
@@ -83,6 +84,7 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-2 lg:flex">
+            <AuthNav />
             <Button asChild variant="default" size="sm">
               <Link href="/enquire">
                 Enquire Now

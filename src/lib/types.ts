@@ -80,3 +80,56 @@ export type Faq = {
   question: string;
   answer: string;
 };
+
+export type Role = "student" | "trainer" | "admin";
+
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: Role;
+  passwordHash: string;
+  createdAt: string;
+  avatarName?: string;
+};
+
+export type PublicUser = Omit<User, "passwordHash">;
+
+export type Enrollment = {
+  id: string;
+  userId: string;
+  courseSlug: string;
+  courseTitle: string;
+  batchId: string;
+  status: "pending" | "active" | "completed";
+  progressPct: number;
+  enrolledAt: string;
+  paymentStatus: "none" | "pending" | "paid";
+};
+
+export type StoreBatch = {
+  id: string;
+  courseSlug: string;
+  courseName: string;
+  mode: string;
+  branch: string;
+  start: string;
+  days: string;
+  slots: string;
+  seatsTotal: number;
+  seatsLeft: number;
+  status: "upcoming" | "running" | "completed";
+};
+
+export type Certificate = {
+  id: string;
+  certId: string;
+  userId: string;
+  userName: string;
+  courseTitle: string;
+  courseSlug: string;
+  issuedAt: string;
+  trainerName: string;
+  hours: number;
+};
