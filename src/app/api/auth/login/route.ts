@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { setSessionCookie, signSession, verifyPassword } from "@/lib/auth";
 import { getStore, publicUser } from "@/lib/store";
+import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
 const schema = z.object({
   email: z.string().trim().toLowerCase().email("Enter a valid email"),
@@ -10,6 +11,11 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+  const ip = getClientIp(req);
+  if (!rateLimit(ip, "login", 5, 60_000)) {
+    return NextResponse.json({ error: "Too many attempts — please wait a minute." }, { status: 429 });
+  }
+
   let body: unknown;
   try {
     body = await req.json();

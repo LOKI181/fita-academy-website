@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Building2 } from "lucide-react";
 
 import { SectionHeader } from "@/components/shared/section-header";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
 import { partnerLogos, partnerStats } from "@/lib/content";
 
 export function PlacementProof() {
@@ -15,10 +16,11 @@ export function PlacementProof() {
           className="[&_h2]:text-white [&_p]:text-white/80 [&_span]:bg-white/10 [&_span]:text-white"
         />
 
-        <div
-          className="mt-10 flex flex-wrap items-center justify-center gap-3"
-          aria-label="Hiring partners"
-        >
+        <FadeIn preset="fade-up" delay={0.2}>
+          <div
+            className="mt-10 flex flex-wrap items-center justify-center gap-3"
+            aria-label="Hiring partners"
+          >
           {partnerLogos.map((name) => (
             <span
               key={name}
@@ -32,27 +34,31 @@ export function PlacementProof() {
             + 90 more
           </span>
         </div>
+        </FadeIn>
 
-        <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <StaggerContainer className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
           {partnerStats.map((s) => (
-            <div
-              key={s.label}
-              className="rounded-2xl bg-white/10 p-5 text-center ring-1 ring-white/15"
-            >
-              <p className="font-heading text-3xl font-bold sm:text-4xl">{s.value}</p>
-              <p className="mt-1 text-xs font-medium text-white/80 sm:text-sm">{s.label}</p>
-            </div>
+            <StaggerItem key={s.label}>
+              <div
+                className="rounded-2xl bg-white/10 p-5 text-center ring-1 ring-white/15"
+              >
+                <p className="font-heading text-3xl font-bold sm:text-4xl">{s.value}</p>
+                <p className="mt-1 text-xs font-medium text-white/80 sm:text-sm">{s.label}</p>
+              </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
-        <div className="mt-10 flex justify-center">
-          <Link
-            href="/placement"
-            className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-primary transition-opacity hover:opacity-90"
-          >
-            Explore the placement process <ArrowRight className="size-4" aria-hidden />
-          </Link>
-        </div>
+        <FadeIn preset="fade-up" delay={0.3}>
+          <div className="mt-10 flex justify-center">
+            <Link
+              href="/placement"
+              className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-primary transition-opacity hover:opacity-90"
+            >
+              Explore the placement process <ArrowRight className="size-4" aria-hidden />
+            </Link>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );

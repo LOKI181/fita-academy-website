@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 
 import { hashPassword, signSession, setSessionCookie } from "@/lib/auth";
 import { getStore, setStore, publicUser } from "@/lib/store";
+import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import type { User } from "@/lib/types";
 
 const schema = z.object({
@@ -19,6 +20,11 @@ const schema = z.object({
 });
 
 export async function POST(req: Request) {
+  const ip = getClientIp(req);
+  if (!rateLimit(ip, "register", 3, 60_000)) {
+    return NextResponse.json({ error: "Too many attempts — please wait a minute." }, { status: 429 });
+  }
+
   let body: unknown;
   try {
     body = await req.json();
