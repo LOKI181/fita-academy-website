@@ -3,7 +3,7 @@ import { z } from "zod";
 import { randomUUID } from "node:crypto";
 
 import { hashPassword, signSession, setSessionCookie } from "@/lib/auth";
-import { getStore, setStore, publicUser } from "@/lib/store";
+import { getStore, addUser, setStore, publicUser } from "@/lib/store";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import type { User } from "@/lib/types";
 
@@ -69,9 +69,7 @@ export async function POST(req: Request) {
     createdAt: new Date().toISOString(),
   };
 
-  await setStore((draft) => {
-    draft.users.push(user);
-  });
+  await addUser(user);
 
   const token = await signSession(user);
   await setSessionCookie(token);

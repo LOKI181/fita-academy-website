@@ -1,4 +1,5 @@
 import type { User, Enrollment, StoreBatch, Certificate } from "@/lib/types";
+import { supabase } from "./supabase";
 
 export type StoredData = {
   users: User[];
@@ -8,9 +9,7 @@ export type StoredData = {
   enquiries: Record<string, unknown>[];
 };
 
-let cache: StoredData | null = null;
-
-const defaultBatches = [
+const defaultBatches: StoreBatch[] = [
   {
     id: "batch-demo-1",
     courseSlug: "java-full-stack",
@@ -22,7 +21,7 @@ const defaultBatches = [
     slots: "7:00 AM & 9:00 AM",
     seatsTotal: 25,
     seatsLeft: 6,
-    status: "upcoming" as const,
+    status: "upcoming",
   },
   {
     id: "batch-demo-2",
@@ -35,66 +34,86 @@ const defaultBatches = [
     slots: "6:30 PM – 9:00 PM",
     seatsTotal: 25,
     seatsLeft: 4,
-    status: "upcoming" as const,
+    status: "upcoming",
   },
 ];
 
-function seed(): StoredData {
-  return {
-    users: [],
-    enrollments: [],
-    batches: defaultBatches,
-    certificates: [],
-    enquiries: [],
-  };
-}
+let memoryCache: StoredData | null = null;
 
 export async function getStore(): Promise<StoredData> {
-  if (cache) return cache;
-  await hydrate();
-  return cache!;
+  if (memoryCache) return memoryCache;
+
+  try {
+    const [usersRes, enrolRes, certRes, enqRes] = await Promise.all([
+      supabase.from("users").select("*"),
+      supabase.from("enrollments").select("*"),
+      supabase.from("certificates").select("*"),
+      supabase.from("enquiries").select("*"),
+    ]);
+
+    memoryCache = {
+      users: usersRes.data as User[] || [],
+      enrollments: enrolRes.data as Enrollment[] || [],
+      batches: defaultBatches,
+      certificates: certRes.data as Certificate[] || [],
+      enquiries: enqRes.data as Record<string, unknown>[] || [],
+    };
+  } catch {
+    memoryCache = {
+      users: [],
+      enrollments: [],
+      batches: defaultBatches,
+      certificates: [],
+      enquiries: [],
+    };
+  }
+
+  return memoryCache;
+}
+
+export async function addUser(user: User): Promise<void> {
+  const { error } = await supabase.from("users").insert(user);
+  if (error) throw error;
+  memoryCache = null;
+}
+
+export async function addEnquiry(enquiry: Record<string, unknown>): Promise<void> {
+  const { error } = await supabase.from("enquiries").insert(enquiry);
+  if (error) throw error;
+  memoryCache = null;
+}
+
+export async function addEnrollment(enrollment: Enrollment): Promise<void> {
+  const { error } = await supabase.from("enrollments").insert(enrollment);
+  if (error) throw error;
+  memoryCache = null;
+}
+
+export async function addCertificate(certificate: Certificate): Promise<void> {
+  const { error } = await supabase.from("certificates").insert(certificate);
+  if (error) throw error;
+  memoryCache = null;
+}
+
+export async function verifyCertificate(certificateNumber: string): Promise<Certificate | null> {
+  const { data, error } = await supabase
+    .from("certificates")
+    .select("*")
+    .eq("certificate_number", certificateNumber)
+    .single();
+
+  if (error) return null;
+  return data as Certificate;
 }
 
 export async function setStore(mutator: (draft: StoredData) => void): Promise<StoredData> {
   const data = await getStore();
   mutator(data);
-  cache = data;
-  await persist();
+  memoryCache = data;
   return data;
 }
 
-async function hydrate(): Promise<void> {
-  try {
-    const { readFile } = await import("node:fs/promises");
-    const path = await import("node:path");
-    const file = path.join(process.cwd(), ".data", "store.json");
-    const raw = await readFile(file, "utf8");
-    const parsed = JSON.parse(raw) as Partial<StoredData>;
-    cache = {
-      ...seed(),
-      ...parsed,
-      batches: parsed.batches?.length ? parsed.batches : defaultBatches,
-    };
-  } catch {
-    cache = seed();
-    await persist();
-  }
-}
-
-async function persist(): Promise<void> {
-  try {
-    const { mkdir, writeFile } = await import("node:fs/promises");
-    const path = await import("node:path");
-    const dir = path.join(process.cwd(), ".data");
-    await mkdir(dir, { recursive: true });
-    await writeFile(path.join(dir, "store.json"), JSON.stringify(cache, null, 2), "utf8");
-  } catch {
-    // best-effort persistence
-  }
-}
-
 export function publicUser(u: User) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { passwordHash, ...safe } = u;
   return safe;
 }

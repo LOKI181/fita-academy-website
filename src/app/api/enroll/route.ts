@@ -3,7 +3,7 @@ import { z } from "zod";
 import { randomUUID } from "node:crypto";
 
 import { requireUser } from "@/lib/auth";
-import { getStore, setStore } from "@/lib/store";
+import { addEnrollment, getStore } from "@/lib/store";
 import type { Enrollment } from "@/lib/types";
 
 const schema = z.object({
@@ -26,48 +26,34 @@ export async function POST(req: Request) {
 
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid course or StoreBatch." }, { status: 400 });
+    return NextResponse.json({ error: "Invalid course or batch." }, { status: 400 });
   }
 
+  // Get batch info for course title
   const store = await getStore();
-  const StoreBatch = store.batches.find((b) => b.id === parsed.data.batchId);
-  if (!StoreBatch) {
-    return NextResponse.json({ error: "StoreBatch not found." }, { status: 404 });
+  const batch = store.batches.find((b) => b.id === parsed.data.batchId);
+  if (!batch) {
+    return NextResponse.json({ error: "Batch not found." }, { status: 404 });
   }
-  if (StoreBatch.seatsLeft <= 0) {
-    return NextResponse.json({ error: "This StoreBatch is full." }, { status: 409 });
-  }
-
-  const existing = store.enrollments.find(
-    (e) => e.userId === auth.user.id && e.courseSlug === parsed.data.courseSlug
-  );
-  if (existing && existing.status !== "completed") {
-    return NextResponse.json(
-      { error: "You're already enrolled in this course." },
-      { status: 409 }
-    );
-  }
-
-  const course = null;
-  void course;
 
   const enrollment: Enrollment = {
     id: `en_${randomUUID()}`,
     userId: auth.user.id,
     courseSlug: parsed.data.courseSlug,
-    courseTitle: StoreBatch.courseName,
-    batchId: StoreBatch.id,
+    courseTitle: batch.courseName,
+    batchId: parsed.data.batchId,
     status: "active",
     progressPct: 0,
     enrolledAt: new Date().toISOString(),
     paymentStatus: "pending",
   };
 
-  await setStore((draft) => {
-    const b = draft.batches.find((x) => x.id === StoreBatch.id);
-    if (b) b.seatsLeft = Math.max(0, b.seatsLeft - 1);
-    draft.enrollments.push(enrollment);
-  });
+  try {
+    await addEnrollment(enrollment);
+  } catch (err) {
+    console.error('[enroll:store]', err);
+    return NextResponse.json({ error: "Failed to create enrollment" }, { status: 500 });
+  }
 
   return NextResponse.json({ enrollment }, { status: 201 });
 }

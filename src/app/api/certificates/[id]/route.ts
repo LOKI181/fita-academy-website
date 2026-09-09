@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
 
-import { getStore } from "@/lib/store";
+import { verifyCertificate } from "@/lib/store";
 
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const store = await getStore();
-  const cert = store.certificates.find((c) => c.certId === id);
+  const cert = await verifyCertificate(id);
 
   if (!cert) {
     return NextResponse.json({ valid: false }, { status: 404 });

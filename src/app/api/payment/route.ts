@@ -3,7 +3,7 @@ import { createHmac } from "node:crypto";
 import { z } from "zod";
 
 import { requireUser } from "@/lib/auth";
-import { setStore } from "@/lib/store";
+import { supabase } from "@/lib/supabase";
 
 const createSchema = z.object({
   amount: z.number().positive(),
@@ -94,12 +94,15 @@ export async function PUT(req: Request) {
 
   // Demo verification
   if (!keySecret || parsed.data.razorpay_order_id.startsWith("order_demo_")) {
-    await setStore((draft) => {
-      const en = draft.enrollments.find(
-        (e) => e.userId === auth.user.id && e.paymentStatus !== "paid"
-      );
-      if (en) en.paymentStatus = "paid";
-    });
+    const { error } = await supabase
+      .from("enrollments")
+      .update({ payment_status: "paid" })
+      .eq("user_id", auth.user.id)
+      .neq("payment_status", "paid");
+
+    if (error) {
+      console.error('[payment:demo]', error);
+    }
     return NextResponse.json({ ok: true, mode: "demo" });
   }
 
@@ -111,10 +114,15 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: "Payment signature mismatch." }, { status: 400 });
   }
 
-  await setStore((draft) => {
-    const en = draft.enrollments.find((e) => e.userId === auth.user.id);
-    if (en) en.paymentStatus = "paid";
-  });
+  const { error } = await supabase
+    .from("enrollments")
+    .update({ payment_status: "paid" })
+    .eq("user_id", auth.user.id);
+
+  if (error) {
+    console.error('[payment:live]', error);
+    return NextResponse.json({ error: "Failed to update enrollment" }, { status: 500 });
+  }
 
   return NextResponse.json({ ok: true, mode: "live" });
 }

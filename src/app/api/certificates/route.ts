@@ -3,7 +3,8 @@ import { z } from "zod";
 import { randomUUID } from "node:crypto";
 
 import { requireRole } from "@/lib/auth";
-import { getStore, setStore } from "@/lib/store";
+import { supabase } from "@/lib/supabase";
+import { addCertificate } from "@/lib/store";
 import type { Certificate } from "@/lib/types";
 
 const schema = z.object({
@@ -30,16 +31,26 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid input." }, { status: 400 });
   }
 
-  const store = await getStore();
-  const user = store.users.find((u) => u.id === parsed.data.userId);
-  if (!user) {
+  // Check user exists
+  const { data: user, error: userErr } = await supabase
+    .from("users")
+    .select("id, name")
+    .eq("id", parsed.data.userId)
+    .single();
+
+  if (userErr || !user) {
     return NextResponse.json({ error: "User not found." }, { status: 404 });
   }
 
-  const enrollment = store.enrollments.find(
-    (e) => e.userId === user.id && e.courseSlug === parsed.data.courseSlug
-  );
-  if (!enrollment) {
+  // Check enrollment
+  const { data: enrollment, error: enrErr } = await supabase
+    .from("enrollments")
+    .select("*")
+    .eq("user_id", user.id)
+    .eq("course_slug", parsed.data.courseSlug)
+    .single();
+
+  if (enrErr || !enrollment) {
     return NextResponse.json({ error: "User is not enrolled in this course." }, { status: 400 });
   }
 
@@ -54,21 +65,25 @@ export async function POST(req: Request) {
     certId,
     userId: user.id,
     userName: user.name,
-    courseTitle: enrollment.courseTitle,
+    courseTitle: enrollment.course_title || enrollment.courseTitle,
     courseSlug: parsed.data.courseSlug,
     issuedAt: new Date().toISOString(),
     trainerName: parsed.data.trainerName,
     hours: 120,
   };
 
-  await setStore((draft) => {
-    draft.certificates.push(certificate);
-    const en = draft.enrollments.find((e) => e.id === enrollment.id);
-    if (en) {
-      en.status = "completed";
-      en.progressPct = 100;
-    }
-  });
+  try {
+    await addCertificate(certificate);
+  } catch (err) {
+    console.error('[certificates:store]', err);
+    return NextResponse.json({ error: "Failed to create certificate" }, { status: 500 });
+  }
+
+  // Update enrollment status
+  await supabase
+    .from("enrollments")
+    .update({ status: "completed", progress_pct: 100 })
+    .eq("id", enrollment.id);
 
   return NextResponse.json({ certificate }, { status: 201 });
 }
