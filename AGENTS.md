@@ -66,13 +66,54 @@ src/
 - Admin registration gated by `FITA_ADMIN_SETUP_KEY`
 
 ## Env Vars (NOT configured — app uses fallbacks)
-| Vars | Status |
-|------|--------|
-| FITA_JWT_SECRET | ⚠️ Hardcoded fallback — MUST set in Vercel |
-| FITA_ADMIN_SETUP_KEY | ⚠️ Hardcoded fallback — MUST set |
-| SMTP_HOST/USER/PASS | ❌ not set — emails silently skip |
-| RAZORPAY keys | ❌ demo mode |
-| CRM_WEBHOOK_URL | ❌ not set |
+No `.env` / `.env.local` file exists in the repo. App runs on hardcoded fallbacks. `.gitignore` excludes `.env*`.
+
+| Variable | File:Line | Purpose | Current Status |
+|----------|-----------|---------|----------------|
+| `FITA_JWT_SECRET` | `src/lib/auth.ts:8` | JWT signing (HS256) | ⚠️ fallback `"fita-local-dev-secret-change-me"` — CRITICAL, forgeable |
+| `FITA_ADMIN_SETUP_KEY` | `src/app/api/auth/register/route.ts:48` | Admin/trainer registration gate | ⚠️ fallback `"fita-admin-demo"` — HIGH, anyone can register admin |
+| `NODE_ENV` | `src/lib/auth.ts:60` | Cookie `Secure` flag | ✅ built-in |
+| `NEXT_PUBLIC_RAZORPAY_KEY_ID` | `payment/route.ts:32` | Razorpay public key | ❌ demo mode |
+| `RAZORPAY_KEY_SECRET` | `payment/route.ts:33,93` | Razorpay HMAC verify | ❌ demo mode |
+| `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS` | `src/lib/mail.ts:16-18` | Email sending | ❌ not set — silently skip |
+| `SMTP_PORT` | `src/lib/mail.ts:29` | Email port | ✅ default 587 |
+| `SMTP_SECURE` | `src/lib/mail.ts:30` | TLS | ✅ false |
+| `MAIL_FROM` | `src/lib/mail.ts:37` | Sender address | ✅ falls back to SMTP_USER |
+| `CRM_WEBHOOK_URL` | `enquiries/route.ts:101` | External CRM webhook | ❌ not set — silently skip |
+
+## API Tokens & MCP Status (checked 2026-09-09)
+- **No MCP servers configured** anywhere (no `.mcp.json`, `.mcp/`, `~/.mcp.json`).
+- **No third-party API keys in the project** — Razorpay (demo), SMTP (missing), CRM (missing).
+- **Agent environment** (this opencode session) has LLM-routing keys only — `OPENROUTER_API_KEY`, `ANTHROPIC_AUTH_TOKEN` (OpenRouter proxy), `OMNIROUTE_API_KEY`, `FREELAPI_API_KEY`, `OPENCODE_API_KEY`. These power the chat itself; do NOT use them for the website.
+- **Vercel CLI** installed (`npx vercel`, v59). Token lives in agent env as `$env:VERCEL_TOKEN` — NEVER commit it.
+- **GitHub CLI (`gh`) NOT installed** — use `git push` for GitHub ops.
+- **No real secrets committed to repo** (verified grep). Keep it that way.
+
+## Security Issues Known (priority order)
+1. 🔴 Hardcoded JWT fallback — token forgery risk | FIX: set `FITA_JWT_SECRET` in Vercel
+2. 🔴 Hardcoded admin setup key | FIX: set `FITA_ADMIN_SETUP_KEY`
+3. 🔴 No `.env.local` at all — zero secrets configured | FIX: create `.env.local`
+4. 🟡 CSP uses `unsafe-inline` + `unsafe-eval` (middleware.ts) | FIX: tighten CSP / use nonces
+5. 🟡 No CSRF protection on mutation APIs | FIX: CSRF token per session
+6. 🟡 Weak password rule (6 chars only) | FIX: zod regex — uppercase + number
+7. 🟡 Rate limit is in-memory only (resets on serverless cold start) | FIX: Upstash/Vercel KV
+8. 🟡 No brute-force lockout | FIX: lock after N failed attempts
+9. 🟢 `jsonwebtoken` installed but unused | FIX: `npm uninstall jsonwebtoken`
+
+## Tests & Quality
+- Only 3 tests exist — all in `src/lib/recommend.test.ts` (the AI recommendation engine).
+- No component/API/e2e tests yet. Vitest env is `node` (DOM components untested).
+- No CI/CD pipeline. No accessibility (axe) or visual-regression checks.
+
+## Working Features (do not break)
+- 12 course detail pages (curriculum, reviews, batches, FAQ)
+- 10 branch pages with embedded Google Maps
+- 13 homepage sections (hero, categories, courses, placement, reviews, FAQ)
+- JWT auth with 3 roles + dashboards (student/trainer/admin)
+- Public certificate verification at `/verify/[id]` with JSON-LD
+- AI Career Assistant (3-question wizard + recommendation engine)
+- Razorpay demo payments (works without real keys)
+- Security headers middleware + sitemap/robots (69 URLs) + error boundaries
 
 ## Vercel Deploy
 Token is stored locally in the agent environment (env var). Do NOT commit tokens to this repo.
