@@ -7,11 +7,15 @@ import { FadeIn } from "@/components/motion";
 import { FloatingTech } from "@/components/shared/floating-tech";
 import { SocialProof } from "@/components/shared/social-proof";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
+import { AmbientFloat } from "@/components/shared/ambient-float";
 import { courses } from "@/lib/content";
 
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-background via-background to-muted/30">
+      {/* Ambient floating effects */}
+      <AmbientFloat />
+
       {/* Giant Background Text */}
       <div className="hero-bg-text" aria-hidden>
         FITA

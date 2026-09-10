@@ -3,6 +3,7 @@ import { TrustBar } from "@/sections/home/trust-bar";
 import { CategoriesGrid } from "@/sections/home/categories-grid";
 import { PopularCourses } from "@/sections/home/popular-courses";
 import { WhyFita } from "@/sections/home/why-fita";
+import { CareerJourney } from "@/sections/home/career-journey";
 import { PlacementProof } from "@/sections/home/placement-proof";
 import { BranchesStrip } from "@/sections/home/branches-strip";
 import { TrainersPreview } from "@/sections/home/trainers-preview";
@@ -24,6 +25,7 @@ export default function Home() {
       <CategoriesGrid />
       <PopularCourses />
       <WhyFita />
+      <CareerJourney />
       <PlacementProof />
       <BranchesStrip />
       <TrainersPreview />

@@ -53,15 +53,15 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #000000;
+  --foreground: #0a0a0c;
   --card: #ffffff;
-  --card-foreground: #000000;
+  --card-foreground: #0a0a0c;
   --popover: #ffffff;
-  --popover-foreground: #000000;
+  --popover-foreground: #0a0a0c;
   --primary: #036ad1;
   --primary-foreground: #ffffff;
   --secondary: #f5f7fa;
-  --secondary-foreground: #000000;
+  --secondary-foreground: #0a0a0c;
   --muted: #f5f7fa;
   --muted-foreground: #5b6472;
   --accent: #eaf3ff;
@@ -73,6 +73,8 @@
   --ring: #036ad1;
   --success: #16a34a;
   --success-foreground: #ffffff;
+  --fita-red: #E31E24;
+  --fita-red-foreground: #ffffff;
   --chart-1: #036ad1;
   --chart-2: #0257a8;
   --chart-3: #eaf3ff;
