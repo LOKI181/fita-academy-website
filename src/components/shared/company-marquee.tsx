@@ -1,41 +1,41 @@
 "use client";
 
-import { useState } from "react";
-
-const companies = [
-  { name: "Infosys", domain: "infosys.com" },
-  { name: "TCS", domain: "tcs.com" },
-  { name: "Wipro", domain: "wipro.com" },
-  { name: "Accenture", domain: "accenture.com" },
-  { name: "Cognizant", domain: "cognizant.com" },
-  { name: "Zoho", domain: "zoho.com" },
-  { name: "HCL", domain: "hcltech.com" },
-  { name: "Oracle", domain: "oracle.com" },
-];
-
-function LogoImage({ company }: { company: { name: string; domain: string } }) {
-  const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(false);
-
-  if (failed) {
-    return (
-      <span className="flex items-center justify-center rounded-lg bg-muted px-4 py-2 text-xs font-bold text-muted-foreground">
-        {company.name}
-      </span>
-    );
-  }
-
+function Logo({ name, bg, textColor, fontWeight, letterSpacing }: {
+  name: string;
+  bg: string;
+  textColor?: string;
+  fontWeight?: string;
+  letterSpacing?: string;
+}) {
   return (
-    <img
-      src={`https://logo.clearbit.com/${company.domain}`}
-      alt={`${company.name} logo`}
-      className={`h-8 w-auto object-contain transition-opacity ${loaded ? "opacity-60 hover:opacity-100" : "opacity-0"}`}
-      loading="lazy"
-      onLoad={() => setLoaded(true)}
-      onError={() => setFailed(true)}
-    />
+    <svg viewBox="0 0 140 50" className="h-10 w-auto" aria-label={`${name} logo`}>
+      <rect width="140" height="50" rx="8" fill={bg} />
+      <text
+        x="70"
+        y="30"
+        textAnchor="middle"
+        fill={textColor || "white"}
+        fontFamily="system-ui, sans-serif"
+        fontWeight={fontWeight || "700"}
+        fontSize="15"
+        letterSpacing={letterSpacing || "0"}
+      >
+        {name}
+      </text>
+    </svg>
   );
 }
+
+const companies = [
+  { name: "Infosys", bg: "#007CC3" },
+  { name: "TCS", bg: "#1F3F7A", letterSpacing: "3" },
+  { name: "Wipro", bg: "#1B365D" },
+  { name: "Accenture", bg: "#A100FF", letterSpacing: "1" },
+  { name: "Cognizant", bg: "#0033A0", letterSpacing: "0.5" },
+  { name: "Zoho", bg: "#E42527", fontWeight: "800" },
+  { name: "HCL", bg: "#0057B8", letterSpacing: "3" },
+  { name: "Oracle", bg: "#C74634" },
+];
 
 export function CompanyMarquee() {
   const allLogos = [...companies, ...companies];
@@ -52,13 +52,18 @@ export function CompanyMarquee() {
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-muted/40 to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-muted/40 to-transparent z-10 pointer-events-none" />
 
-        <div className="flex items-center gap-12 animate-marquee">
+        <div className="flex items-center gap-10 animate-marquee">
           {allLogos.map((company, i) => (
             <span
               key={`${company.name}-${i}`}
-              className="shrink-0 flex items-center"
+              className="shrink-0 opacity-50 hover:opacity-100 transition-opacity cursor-default"
             >
-              <LogoImage company={company} />
+              <Logo
+                name={company.name}
+                bg={company.bg}
+                fontWeight={company.fontWeight}
+                letterSpacing={company.letterSpacing}
+              />
             </span>
           ))}
         </div>
