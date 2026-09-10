@@ -20,10 +20,13 @@ export function HeroSection() {
       {/* Floating Tech Objects */}
       <FloatingTech />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:py-32 lg:px-8">
-        <div>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:py-32 lg:px-8">
+        {/* Centered content */}
+        <div className="mx-auto max-w-3xl text-center">
           <FadeIn preset="fade-up" delay={0.1}>
-            <SocialProof />
+            <div className="flex justify-center">
+              <SocialProof />
+            </div>
           </FadeIn>
 
           <FadeIn preset="fade-up" delay={0.2}>
@@ -35,20 +38,20 @@ export function HeroSection() {
           </FadeIn>
 
           <FadeIn preset="fade-up" delay={0.35}>
-            <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
+            <p className="mt-5 max-w-xl mx-auto text-lg leading-relaxed text-muted-foreground">
               Industry-focused training with real projects, expert trainers and
               placement support across 10+ cities.
             </p>
           </FadeIn>
 
           <FadeIn preset="fade-up" delay={0.5}>
-            <div className="mt-7">
+            <div className="mt-7 flex justify-center">
               <CourseSearch courses={courses} />
             </div>
           </FadeIn>
 
           <FadeIn preset="fade-up" delay={0.6}>
-            <div className="mt-7 flex flex-wrap gap-3">
+            <div className="mt-7 flex flex-wrap justify-center gap-3">
               <Button asChild size="lg" className="btn-press glow-primary-hover">
                 <Link href="/courses">
                   Explore Courses <ArrowRight aria-hidden className="ml-1" />
@@ -61,24 +64,24 @@ export function HeroSection() {
           </FadeIn>
         </div>
 
-        <FadeIn preset="scale-in" delay={0.3} className="hidden lg:block">
-          <div className="relative">
-            {/* Glass Card with Stats */}
+        {/* Glass Stats Card - below centered content */}
+        <FadeIn preset="fade-up" delay={0.4} className="mt-12">
+          <div className="mx-auto max-w-2xl">
             <div className="liquid-glass clay rounded-3xl p-8 sm:p-10">
-              <div className="mb-6 flex items-center gap-2 text-sm font-medium text-primary">
+              <div className="mb-6 flex items-center justify-center gap-2 text-sm font-medium text-primary">
                 <Sparkles className="size-4" aria-hidden />
                 Chennai&apos;s most trusted IT institute
               </div>
-              <p className="font-heading text-2xl font-bold leading-snug text-foreground">
+              <p className="text-center font-heading text-xl font-bold leading-snug text-foreground">
                 From non-IT backgrounds to{" "}
                 <span className="text-primary">full-stack developers</span>,
                 data analysts and cloud engineers.
               </p>
 
-              {/* Animated Stat Grid */}
-              <div className="mt-8 grid grid-cols-2 gap-4">
+              {/* Stats Grid */}
+              <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
                 <div className="clay rounded-2xl bg-background/80 p-5 text-center">
-                  <p className="font-heading text-3xl font-black text-primary">
+                  <p className="font-heading text-2xl font-black text-primary">
                     <AnimatedCounter target={10000} suffix="+" />
                   </p>
                   <p className="mt-1 text-xs font-medium text-muted-foreground">
@@ -86,7 +89,7 @@ export function HeroSection() {
                   </p>
                 </div>
                 <div className="clay rounded-2xl bg-background/80 p-5 text-center">
-                  <p className="font-heading text-3xl font-black text-primary">
+                  <p className="font-heading text-2xl font-black text-primary">
                     <AnimatedCounter target={3000} suffix="+" />
                   </p>
                   <p className="mt-1 text-xs font-medium text-muted-foreground">
@@ -94,7 +97,7 @@ export function HeroSection() {
                   </p>
                 </div>
                 <div className="clay rounded-2xl bg-background/80 p-5 text-center">
-                  <p className="font-heading text-3xl font-black text-primary">
+                  <p className="font-heading text-2xl font-black text-primary">
                     <AnimatedCounter target={120} suffix="+" />
                   </p>
                   <p className="mt-1 text-xs font-medium text-muted-foreground">
@@ -102,7 +105,7 @@ export function HeroSection() {
                   </p>
                 </div>
                 <div className="clay rounded-2xl bg-background/80 p-5 text-center">
-                  <p className="font-heading text-3xl font-black text-primary">
+                  <p className="font-heading text-2xl font-black text-primary">
                     <AnimatedCounter target={25} suffix="+" />
                   </p>
                   <p className="mt-1 text-xs font-medium text-muted-foreground">

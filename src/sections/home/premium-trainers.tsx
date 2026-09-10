@@ -26,9 +26,9 @@ export function PremiumTrainers() {
               key={t.name}
               className="card-premium group rounded-2xl border border-border bg-background p-6 transition-all"
             >
-              {/* Avatar with initials */}
-              <div className="relative mx-auto size-20 overflow-hidden rounded-full bg-gradient-to-br from-primary/10 to-accent">
-                <span className="grid size-full place-items-center font-heading text-2xl font-bold text-primary">
+              {/* Avatar with photo placeholder */}
+              <div className="relative mx-auto size-24 overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-accent border border-border">
+                <span className="grid size-full place-items-center font-heading text-3xl font-bold text-primary">
                   {t.name.split(" ").map((n) => n[0]).join("")}
                 </span>
               </div>

@@ -9,7 +9,6 @@ import { cn } from "cn";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Logo } from "@/components/site/logo";
-import { ThemeToggle } from "@/components/site/theme-toggle";
 import { AuthNav } from "@/components/site/auth-nav";
 import { brand, branches } from "@/lib/content";
 
@@ -96,7 +95,6 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-2 lg:flex">
-            <ThemeToggle />
             <AuthNav />
             <Button asChild variant="default" size="sm" className="btn-press glow-primary-hover">
               <Link href="/enquire">
@@ -114,9 +112,8 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[320px] p-0">
               <SheetHeader className="border-b px-6 py-5">
-                <SheetTitle className="text-left flex items-center justify-between gap-2">
+                <SheetTitle className="text-left">
                   <Logo />
-                  <ThemeToggle />
                 </SheetTitle>
               </SheetHeader>
               <nav aria-label="Mobile" className="flex flex-col gap-1 p-4">
