@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { CourseSearch } from "@/components/site/course-search";
 import { FadeIn } from "@/components/motion";
 import { FloatingTech } from "@/components/shared/floating-tech";
 import { SocialProof } from "@/components/shared/social-proof";
-import { AnimatedCounter } from "@/components/shared/animated-counter";
 import { courses } from "@/lib/content";
 
 export function HeroSection() {
@@ -63,59 +62,6 @@ export function HeroSection() {
             </div>
           </FadeIn>
         </div>
-
-        {/* Glass Stats Card - below centered content */}
-        <FadeIn preset="fade-up" delay={0.4} className="mt-12">
-          <div className="mx-auto max-w-2xl">
-            <div className="liquid-glass clay rounded-3xl p-8 sm:p-10">
-              <div className="mb-6 flex items-center justify-center gap-2 text-sm font-medium text-primary">
-                <Sparkles className="size-4" aria-hidden />
-                Chennai&apos;s most trusted IT institute
-              </div>
-              <p className="text-center font-heading text-xl font-bold leading-snug text-foreground">
-                From non-IT backgrounds to{" "}
-                <span className="text-primary">full-stack developers</span>,
-                data analysts and cloud engineers.
-              </p>
-
-              {/* Stats Grid */}
-              <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <div className="clay rounded-2xl bg-background/80 p-5 text-center">
-                  <p className="font-heading text-2xl font-black text-primary">
-                    <AnimatedCounter target={10000} suffix="+" />
-                  </p>
-                  <p className="mt-1 text-xs font-medium text-muted-foreground">
-                    Students placed
-                  </p>
-                </div>
-                <div className="clay rounded-2xl bg-background/80 p-5 text-center">
-                  <p className="font-heading text-2xl font-black text-primary">
-                    <AnimatedCounter target={3000} suffix="+" />
-                  </p>
-                  <p className="mt-1 text-xs font-medium text-muted-foreground">
-                    Hiring partners
-                  </p>
-                </div>
-                <div className="clay rounded-2xl bg-background/80 p-5 text-center">
-                  <p className="font-heading text-2xl font-black text-primary">
-                    <AnimatedCounter target={120} suffix="+" />
-                  </p>
-                  <p className="mt-1 text-xs font-medium text-muted-foreground">
-                    Career courses
-                  </p>
-                </div>
-                <div className="clay rounded-2xl bg-background/80 p-5 text-center">
-                  <p className="font-heading text-2xl font-black text-primary">
-                    <AnimatedCounter target={25} suffix="+" />
-                  </p>
-                  <p className="mt-1 text-xs font-medium text-muted-foreground">
-                    Years of trust
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </FadeIn>
       </div>
     </section>
   );

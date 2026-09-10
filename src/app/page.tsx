@@ -21,6 +21,7 @@ export default function Home() {
     <>
       <LocalBusinessJsonLd />
       <HeroSection />
+      <CompanyMarquee />
       <TrustBar />
       <ServiceTags />
       <WhyFita />
@@ -29,7 +30,6 @@ export default function Home() {
       <PopularCourses />
       <CareerJourney />
       <PlacementProof />
-      <CompanyMarquee />
       <EditorialSuccessStories />
       <PremiumTrainers />
       <NetworkBranches />
