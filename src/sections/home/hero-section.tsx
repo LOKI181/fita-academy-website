@@ -11,7 +11,7 @@ import { courses } from "@/lib/content";
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-background via-background to-muted/30">
+    <section className="relative overflow-hidden bg-background">
       {/* Giant Background Text */}
       <div className="hero-bg-text" aria-hidden>
         FITA
