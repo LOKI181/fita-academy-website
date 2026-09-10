@@ -1,9 +1,18 @@
 "use client";
 
-import { partnerLogos } from "@/lib/content";
+const companies = [
+  { name: "Infosys", style: "font-bold tracking-tight" },
+  { name: "TCS", style: "font-black tracking-widest uppercase" },
+  { name: "Wipro", style: "font-bold tracking-tight" },
+  { name: "Accenture", style: "font-semibold tracking-wide" },
+  { name: "Cognizant", style: "font-bold tracking-tight" },
+  { name: "CTS", style: "font-black tracking-widest uppercase" },
+  { name: "Zoho", style: "font-bold tracking-tight text-primary" },
+  { name: "HCL", style: "font-black tracking-widest uppercase" },
+];
 
 export function CompanyMarquee() {
-  const logos = [...partnerLogos, ...partnerLogos];
+  const allLogos = [...companies, ...companies];
 
   return (
     <section className="border-y border-border bg-muted/40 overflow-hidden">
@@ -13,20 +22,17 @@ export function CompanyMarquee() {
         </p>
       </div>
 
-      {/* Marquee container */}
       <div className="relative pb-6">
-        {/* Gradient fade edges */}
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-muted/40 to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-muted/40 to-transparent z-10 pointer-events-none" />
 
-        {/* Scrolling track */}
-        <div className="flex gap-12 animate-marquee">
-          {logos.map((name, i) => (
+        <div className="flex items-center gap-16 animate-marquee">
+          {allLogos.map((company, i) => (
             <span
-              key={`${name}-${i}`}
-              className="flex items-center gap-2 font-heading text-lg font-bold tracking-tight text-foreground/70 hover:text-primary whitespace-nowrap shrink-0 transition-colors cursor-default"
+              key={`${company.name}-${i}`}
+              className={`font-heading text-xl ${company.style} text-foreground/60 hover:text-foreground whitespace-nowrap shrink-0 transition-colors cursor-default select-none`}
             >
-              {name}
+              {company.name}
             </span>
           ))}
         </div>
@@ -38,7 +44,7 @@ export function CompanyMarquee() {
           100% { transform: translateX(-50%); }
         }
         .animate-marquee {
-          animation: marquee 25s linear infinite;
+          animation: marquee 30s linear infinite;
         }
         .animate-marquee:hover {
           animation-play-state: paused;
