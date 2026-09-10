@@ -1,110 +1,121 @@
 import Link from "next/link";
-import { Mail, MessageCircle } from "lucide-react";
+import { Mail, MapPin, Phone, Star } from "lucide-react";
 
 import { Logo } from "@/components/site/logo";
-import { brand } from "@/lib/content";
+import { brand, branches } from "@/lib/content";
 
-const navLinks = [
-  { label: "Courses", href: "/courses" },
-  { label: "Programs", href: "/programs" },
-  { label: "Placement", href: "/placement" },
-  { label: "Branches", href: "/branches" },
-  { label: "About", href: "/about" },
+const footerLinks = [
+  { label: "About FITA", href: "/about" },
+  { label: "Master Programs", href: "/programs" },
+  { label: "Online Courses", href: "/online-courses" },
+  { label: "Success Stories", href: "/success-stories" },
+  { label: "Careers", href: "/careers" },
+  { label: "Corporate Training", href: "/business/corporate-training" },
+  { label: "Book a Demo", href: "/demo" },
 ];
 
-const portalLinks = [
-  { label: "Student Login", href: "/login" },
-  { label: "Create Account", href: "/register" },
-  { label: "Help & Support", href: "/contact" },
+const legalLinks = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Use", href: "/terms" },
+  { label: "Refund Policy", href: "/refund" },
 ];
 
 export function MinimalFooter() {
   return (
-    <footer className="relative bg-secondary border-t border-border/60 pt-10 md:pt-12 pb-6 overflow-hidden">
-      <div className="w-full max-w-7xl mx-auto px-4 md:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-8 mb-8 border-b border-border/60">
-          {/* Brand */}
-          <div className="lg:col-span-6 flex flex-col items-start text-left">
-            <Logo />
-            <p className="mt-3 text-xs md:text-sm text-muted-foreground max-w-md mb-4 leading-relaxed">
-              Focus&apos;d IT Academy — Chennai&apos;s trusted IT training &amp;
-              placement institute. 120+ career courses, real projects and
-              10,000+ students placed since 1999.
-            </p>
-            <div className="flex items-center gap-3">
-              <a
-                href={`mailto:${brand.email}`}
-                className="p-2.5 rounded-lg bg-background hover:bg-border/50 border border-border text-muted-foreground hover:text-primary transition-colors duration-300"
-                aria-label="Email"
-              >
-                <Mail className="size-4" aria-hidden />
-              </a>
-              <a
-                href={brand.whatsapp}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 rounded-lg bg-background hover:bg-border/50 border border-border text-muted-foreground hover:text-primary transition-colors duration-300"
-                aria-label="WhatsApp"
-              >
-                <MessageCircle className="size-4" aria-hidden />
-              </a>
-            </div>
-          </div>
-
-          {/* Navigation */}
-          <div className="lg:col-span-3 text-left">
-            <h4 className="text-xs font-bold font-display uppercase tracking-widest text-foreground mb-4">
-              Navigation
-            </h4>
-            <ul className="space-y-3 text-xs md:text-sm">
-              {navLinks.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Portal */}
-          <div className="lg:col-span-3 text-left">
-            <h4 className="text-xs font-bold font-display uppercase tracking-widest text-foreground mb-4">
-              Portal Access
-            </h4>
-            <ul className="space-y-3 text-xs md:text-sm">
-              {portalLinks.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+    <footer className="border-t border-border bg-muted/60">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:px-8">
+        <div>
+          <Logo />
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
+            Focus&apos;d IT Academy — Chennai&apos;s trusted IT training &amp; placement
+            institute. 120+ career courses, real projects and 10k+ students placed
+            since 1999.
+          </p>
+          <div className="mt-5 flex flex-col gap-2 text-sm text-muted-foreground">
+            <a
+              href={`tel:${brand.phone.replace(/\s/g, "")}`}
+              className="flex items-center gap-2 hover:text-foreground"
+            >
+              <Phone className="size-4 text-primary" aria-hidden />
+              {brand.phone}
+            </a>
+            <a
+              href={`mailto:${brand.email}`}
+              className="flex items-center gap-2 hover:text-foreground"
+            >
+              <Mail className="size-4 text-primary" aria-hidden />
+              {brand.email}
+            </a>
+            <span className="flex items-center gap-2">
+              <MapPin className="size-4 text-primary" aria-hidden />
+              {branches.length} branches · {brand.cities}+ cities
+            </span>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} {brand.name}. All rights reserved.</p>
-          <div className="flex gap-4">
-            <Link href="/privacy" className="hover:text-primary transition-colors">
-              Privacy Policy
-            </Link>
-            <span>•</span>
-            <Link href="/terms" className="hover:text-primary transition-colors">
-              Terms &amp; Conditions
-            </Link>
-            <span>•</span>
-            <Link href="/refund" className="hover:text-primary transition-colors">
-              Refund Policy
-            </Link>
+        <nav aria-label="Company">
+          <h3 className="font-heading text-sm font-semibold text-foreground">
+            FITA Academy
+          </h3>
+          <ul className="mt-4 space-y-2.5 text-sm">
+            {footerLinks.map((l) => (
+              <li key={l.href}>
+                <Link href={l.href} className="text-muted-foreground hover:text-primary">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground">
+            <Star className="size-3.5 fill-current" aria-hidden />
+            4.8/5 from 500+ Google reviews
           </div>
+        </nav>
+
+        <nav aria-label="Legal">
+          <h3 className="font-heading text-sm font-semibold text-foreground">
+            Legal
+          </h3>
+          <ul className="mt-4 space-y-2.5 text-sm">
+            {legalLinks.map((l) => (
+              <li key={l.href}>
+                <Link href={l.href} className="text-muted-foreground hover:text-primary">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div>
+          <h3 className="font-heading text-sm font-semibold text-foreground">
+            Connect
+          </h3>
+          <ul className="mt-4 space-y-2.5 text-sm">
+            <li>
+              <a href="https://instagram.com/fitaacademy" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
+                Instagram
+              </a>
+            </li>
+            <li>
+              <a href="https://linkedin.com/company/fitaacademy" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
+                LinkedIn
+              </a>
+            </li>
+            <li>
+              <a href="https://youtube.com/@fitaacademy" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary">
+                YouTube
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-border">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-6 text-xs text-muted-foreground sm:flex-row sm:px-6 lg:px-8">
+          <p>
+            © {new Date().getFullYear()} {brand.name}. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
