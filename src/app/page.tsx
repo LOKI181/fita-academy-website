@@ -6,7 +6,6 @@ import { PopularCourses } from "@/sections/home/popular-courses";
 import { WhyFita } from "@/sections/home/why-fita";
 import { CareerJourney } from "@/sections/home/career-journey";
 import { PlacementProof } from "@/sections/home/placement-proof";
-import { CompanyMarquee } from "@/components/shared/company-marquee";
 import { EditorialSuccessStories } from "@/components/shared/editorial-success-stories";
 import { PremiumTrainers } from "@/sections/home/premium-trainers";
 import { TeamStats } from "@/sections/home/team-stats";
@@ -21,7 +20,6 @@ export default function Home() {
     <>
       <LocalBusinessJsonLd />
       <HeroSection />
-      <CompanyMarquee />
       <TrustBar />
       <ServiceTags />
       <WhyFita />

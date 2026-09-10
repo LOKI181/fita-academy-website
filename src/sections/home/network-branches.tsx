@@ -40,50 +40,16 @@ export function NetworkBranches() {
           </p>
         </div>
 
-        {/* Network visualization */}
-        <div className="relative mx-auto mt-12 aspect-[16/9] max-w-3xl overflow-hidden rounded-2xl border border-border bg-background">
-          {/* Connection lines (SVG) */}
-          <svg className="absolute inset-0 h-full w-full" aria-hidden>
-            {/* Chennai to others */}
-            <line x1="55%" y1="45%" x2="30%" y2="55%" stroke="currentColor" strokeWidth="1" className="text-border" strokeDasharray="4 4" />
-            <line x1="55%" y1="45%" x2="40%" y2="75%" stroke="currentColor" strokeWidth="1" className="text-border" strokeDasharray="4 4" />
-            <line x1="55%" y1="45%" x2="45%" y2="35%" stroke="currentColor" strokeWidth="1" className="text-border" strokeDasharray="4 4" />
-            <line x1="55%" y1="45%" x2="35%" y2="40%" stroke="currentColor" strokeWidth="1" className="text-border" strokeDasharray="4 4" />
-            <line x1="55%" y1="45%" x2="60%" y2="60%" stroke="currentColor" strokeWidth="1" className="text-border" strokeDasharray="4 4" />
-            <line x1="55%" y1="45%" x2="40%" y2="20%" stroke="currentColor" strokeWidth="1" className="text-border" strokeDasharray="4 4" />
-            <line x1="30%" y1="55%" x2="25%" y2="50%" stroke="currentColor" strokeWidth="1" className="text-border" strokeDasharray="4 4" />
-          </svg>
-
-          {/* City nodes */}
-          {cities.map((city) => (
-            <button
-              key={city.name}
-              onClick={() => setSelected(selected === city.name ? null : city.name)}
-              className={`absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
-                selected === city.name
-                  ? "scale-125 z-10"
-                  : "hover:scale-110"
-              }`}
-              style={{ left: city.x, top: city.y }}
-              aria-label={`View branches in ${city.name}`}
-            >
-              <div
-                className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold shadow-md transition-colors ${
-                  selected === city.name
-                    ? "bg-primary text-white"
-                    : "bg-background text-foreground border border-border hover:border-primary"
-                }`}
-              >
-                <MapPin className="size-3" aria-hidden />
-                {city.name}
-                {city.branches > 1 && (
-                  <span className="ml-0.5 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold text-primary">
-                    {city.branches}
-                  </span>
-                )}
-              </div>
-            </button>
-          ))}
+        {/* Google Maps iframe */}
+        <div className="mt-10 overflow-hidden rounded-2xl border border-border">
+          <iframe
+            title="FITA Academy branches across India"
+            src="https://maps.google.com/maps?q=FITA+Academy+Chennai&t=&z=11&output=embed"
+            className="h-64 w-full sm:h-80"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
         </div>
 
         {/* Selected city branches */}
