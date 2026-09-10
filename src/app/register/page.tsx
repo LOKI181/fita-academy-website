@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { RegisterForm } from "@/components/auth/auth-forms";
@@ -25,12 +24,6 @@ export default async function RegisterPage() {
           <RegisterForm />
         </CardContent>
       </Card>
-      <p className="mt-6 text-center text-xs text-muted-foreground">
-        Students create a free account.{" "}
-        <Link href="/login" className="font-semibold text-primary hover:underline">
-          Already have one? Sign in
-        </Link>
-      </p>
     </section>
   );
 }

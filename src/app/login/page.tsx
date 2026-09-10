@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { LoginForm } from "@/components/auth/auth-forms";
@@ -25,12 +24,6 @@ export default async function LoginPage() {
           <LoginForm />
         </CardContent>
       </Card>
-      <p className="mt-6 text-center text-xs text-muted-foreground">
-        First time here?{" "}
-        <Link href="/register" className="font-semibold text-primary hover:underline">
-          Create a free account
-        </Link>
-      </p>
     </section>
   );
 }
