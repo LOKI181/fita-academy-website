@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { addEnquiry } from "@/lib/store";
 import { sendEnquiryNotification, sendBookingConfirmation } from "@/lib/mail";
+import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
 const schema = z.object({
   intent: z.enum(["enquiry", "demo", "contact"]).default("enquiry"),
@@ -19,25 +20,10 @@ const schema = z.object({
   pagePath: z.string().max(500).default(""),
 });
 
-const RATE_WINDOW_MS = 60_000;
-const RATE_MAX = 3;
-const hits = new Map<string, number[]>();
-
-function rateLimit(ip: string): boolean {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
-  recent.push(now);
-  hits.set(ip, recent);
-  return recent.length <= RATE_MAX;
-}
-
 export async function POST(req: Request) {
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "local";
+  const ip = getClientIp(req);
 
-  if (!rateLimit(ip)) {
+  if (!rateLimit(ip, "enquiries", 3, 60_000)) {
     return NextResponse.json(
       { error: "Too many requests — please wait a minute and try again." },
       { status: 429 }

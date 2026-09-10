@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { addEnquiry } from "@/lib/store";
+import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Name is required").max(120),
@@ -15,25 +16,9 @@ const schema = z.object({
   position: z.string().max(200).default(""),
 });
 
-const RATE_WINDOW_MS = 60_000;
-const RATE_MAX = 5;
-const hits = new Map<string, number[]>();
-
-function rateLimit(ip: string): boolean {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
-  recent.push(now);
-  hits.set(ip, recent);
-  return recent.length <= RATE_MAX;
-}
-
 export async function POST(req: Request) {
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "local";
-
-  if (!rateLimit(ip)) {
+  const ip = getClientIp(req);
+  if (!rateLimit(ip, "careers", 5, 60_000)) {
     return NextResponse.json(
       { error: "Too many requests — please wait a minute." },
       { status: 429 }

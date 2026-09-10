@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "All Courses",
   description:
     "Browse all 120+ FITA Academy courses — Java Full Stack, Python, Data Science, Cloud & DevOps, Testing, UI/UX, Digital Marketing and more.",
+  alternates: { canonical: "/courses" },
 };
 
 export default function CoursesPage() {

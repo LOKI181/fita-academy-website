@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Student Reviews",
   description:
     "Real reviews from FITA Academy students and alumni — 4.8/5 average from 500+ Google reviews across 8 branches.",
+  alternates: { canonical: "/reviews" },
 };
 
 export default function ReviewsPage() {

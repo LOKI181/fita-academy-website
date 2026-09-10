@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "About FITA Academy",
   description:
     "FITA Academy (Focus'd IT Academy) — 25+ years, 120+ courses, 10,000+ students placed across 8+ cities. Learn how we train differently.",
+  alternates: { canonical: "/about" },
 };
 
 const pillars = [

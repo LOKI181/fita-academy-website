@@ -49,6 +49,25 @@ export const metadata: Metadata = {
     title: "FITA Academy | IT Training & Placement Institute",
     description:
       "120+ career courses with real projects and placement support. Classroom & live online across 8 branches.",
+    images: [
+      {
+        url: "/og/default.svg",
+        width: 1200,
+        height: 630,
+        alt: "FITA Academy — IT Training & Placement Institute",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FITA Academy | IT Training & Placement Institute",
+    description:
+      "120+ career courses with real projects and placement support. Classroom & live online across 8 branches.",
+    images: ["/og/default.svg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

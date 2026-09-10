@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Placement Support",
   description:
     "FITA Academy's placement support — 100+ hiring partners, 10,000+ students placed, resume & mock interview drills, and real-project portfolios.",
+  alternates: { canonical: "/placement" },
 };
 
 const steps = [
