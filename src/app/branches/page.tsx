@@ -51,7 +51,24 @@ export default function BranchesPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      {/* Google Maps */}
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <ScrollReveal>
+          <div className="overflow-hidden rounded-2xl border border-border">
+            <iframe
+              title="FITA Academy branches across India"
+              src="https://maps.google.com/maps?q=FITA+Academy+Chennai&t=&z=11&output=embed"
+              className="h-72 w-full sm:h-96"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+          </div>
+        </ScrollReveal>
+      </section>
+
+      {/* Branch cards */}
+      <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
         <ScrollReveal>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {branches.map((b) => (
