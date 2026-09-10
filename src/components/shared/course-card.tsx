@@ -11,7 +11,7 @@ import type { Course } from "@/lib/types";
 export function CourseCard({ course, tabIndex }: { course: Course; tabIndex?: number }) {
   const category = getCategory(course.category);
   return (
-    <Card className="flex h-full flex-col overflow-hidden transition-shadow hover:shadow-md">
+    <Card className="card-premium flex h-full flex-col overflow-hidden border-border/60">
       <CardHeader className="flex flex-row items-start justify-between gap-2 border-b border-border/60 p-5 pb-4">
         <div>
           <span className="text-xs font-medium text-muted-foreground">

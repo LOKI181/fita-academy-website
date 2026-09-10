@@ -140,7 +140,7 @@ export function RegisterForm() {
     if (!/^\S+@\S+\.\S+$/.test(form.email)) next.email = "Enter a valid email";
     if (!/^[6-9]\d{9}$/.test(form.phone.replace(/\D/g, "")))
       next.phone = "Enter a valid 10-digit mobile number";
-    if (form.password.length < 6) next.password = "Use at least 6 characters";
+    if (form.password.length < 8 || !/[A-Z]/.test(form.password) || !/[0-9]/.test(form.password)) next.password = "Use at least 8 characters with an uppercase letter and a number";
     if (isStaff && form.adminKey.length < 4) next.adminKey = "Staff setup key required";
     setErrors(next);
     if (Object.keys(next).length) return;

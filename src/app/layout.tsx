@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/site/header";
 import { Footer } from "@/components/site/footer";
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
       <head>
@@ -82,16 +84,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
       </head>
       <body className="min-h-full flex flex-col">
-        <SkipLink />
-        <ScrollProgress />
-        <Header />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <WhatsAppFloat />
-        <Toaster position="bottom-right" />
-        {gaId && <GoogleAnalytics />}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange={false}>
+          <SkipLink />
+          <ScrollProgress />
+          <Header />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+          <WhatsAppFloat />
+          <Toaster position="bottom-right" />
+          {gaId && <GoogleAnalytics />}
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -114,6 +114,7 @@ export async function setStore(mutator: (draft: StoredData) => void): Promise<St
 }
 
 export function publicUser(u: User) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { passwordHash, ...safe } = u;
   return safe;
 }

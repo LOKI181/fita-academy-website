@@ -9,6 +9,7 @@ import { cn } from "cn";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Logo } from "@/components/site/logo";
+import { ThemeToggle } from "@/components/site/theme-toggle";
 import { AuthNav } from "@/components/site/auth-nav";
 import { brand, branches, navLinks } from "@/lib/content";
 
@@ -58,8 +59,8 @@ export function Header() {
 
       <div
         className={cn(
-          "border-b bg-background/95 backdrop-blur transition-shadow",
-          scrolled && "border-border shadow-sm"
+          "liquid-glass border-b transition-shadow",
+          scrolled && "shadow-sm"
         )}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
@@ -84,6 +85,7 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-2 lg:flex">
+            <ThemeToggle />
             <AuthNav />
             <Button asChild variant="default" size="sm">
               <Link href="/enquire">
@@ -101,8 +103,9 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[320px] p-0">
               <SheetHeader className="border-b px-6 py-5">
-                <SheetTitle className="text-left">
+                <SheetTitle className="text-left flex items-center justify-between gap-2">
                   <Logo />
+                  <ThemeToggle />
                 </SheetTitle>
               </SheetHeader>
               <nav aria-label="Mobile" className="flex flex-col gap-1 p-4">

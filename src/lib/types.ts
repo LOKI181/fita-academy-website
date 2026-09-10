@@ -133,3 +133,45 @@ export type Certificate = {
   trainerName: string;
   hours: number;
 };
+
+export type MasterProgram = {
+  slug: string;
+  title: string;
+  description: string;
+  duration: string;
+  courses: string[];
+  highlights: string[];
+  fees: string;
+  badge?: string;
+};
+
+export type CareerOpening = {
+  id: string;
+  title: string;
+  department: string;
+  location: string;
+  type: "Full-time" | "Part-time" | "Contract";
+  experience: string;
+  description: string;
+};
+
+export type PlacementRecord = {
+  studentName: string;
+  course: string;
+  role: string;
+  company: string;
+  location: string;
+  year: number;
+  month: string;
+  package?: string;
+};
+
+export type SuccessStory = {
+  name: string;
+  course: string;
+  previousRole: string;
+  placedRole: string;
+  company: string;
+  quote: string;
+  branch: string;
+};

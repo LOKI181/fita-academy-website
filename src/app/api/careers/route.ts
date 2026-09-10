@@ -2,25 +2,21 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { addEnquiry } from "@/lib/store";
-import { sendEnquiryNotification, sendBookingConfirmation } from "@/lib/mail";
 
 const schema = z.object({
-  intent: z.enum(["enquiry", "demo", "contact"]).default("enquiry"),
   name: z.string().trim().min(2, "Name is required").max(120),
+  email: z.string().trim().email("Enter a valid email"),
   phone: z
     .string()
     .transform((v) => v.replace(/\D/g, ""))
-    .refine((v) => /^[6-9]\d{9}$/.test(v), "Invalid mobile number"),
-  email: z.union([z.literal(""), z.string().trim().email("Invalid email")]),
-  branch: z.string().max(120).default(""),
-  course: z.string().max(160).default(""),
-  mode: z.enum(["classroom", "live-online", "not-sure", ""]).default(""),
+    .refine((v) => /^[6-9]\d{9}$/.test(v), "Enter a valid 10-digit mobile number"),
+  subject: z.string().max(200).default("Career application"),
   message: z.string().max(2000).default(""),
-  pagePath: z.string().max(500).default(""),
+  position: z.string().max(200).default(""),
 });
 
 const RATE_WINDOW_MS = 60_000;
-const RATE_MAX = 3;
+const RATE_MAX = 5;
 const hits = new Map<string, number[]>();
 
 function rateLimit(ip: string): boolean {
@@ -39,7 +35,7 @@ export async function POST(req: Request) {
 
   if (!rateLimit(ip)) {
     return NextResponse.json(
-      { error: "Too many requests — please wait a minute and try again." },
+      { error: "Too many requests — please wait a minute." },
       { status: 429 }
     );
   }
@@ -59,6 +55,11 @@ export async function POST(req: Request) {
 
   const record = {
     ...parsed.data,
+    intent: "contact" as const,
+    branch: "",
+    course: "",
+    mode: "" as const,
+    pagePath: "/careers",
     ip_hash: ip,
     created_at: new Date().toISOString(),
   };
@@ -66,32 +67,8 @@ export async function POST(req: Request) {
   try {
     await addEnquiry(record);
   } catch (err) {
-    console.error('[enquiries:store]', err);
-    return NextResponse.json({ error: "Failed to save enquiry" }, { status: 500 });
-  }
-
-  // Send emails (best-effort, never blocks the user)
-  try {
-    if (record.email) {
-      await sendBookingConfirmation({
-        name: record.name,
-        email: record.email,
-        phone: record.phone,
-        course: record.course || undefined,
-        branch: record.branch || undefined,
-      });
-    }
-    await sendEnquiryNotification({
-      name: record.name,
-      email: record.email,
-      phone: record.phone,
-      course: record.course || undefined,
-      branch: record.branch || undefined,
-      message: record.message || undefined,
-      pagePath: record.pagePath || undefined,
-    });
-  } catch (err) {
-    console.error('[enquiries:email]', err);
+    console.error("[careers:store]", err);
+    return NextResponse.json({ error: "Failed to save application" }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true });

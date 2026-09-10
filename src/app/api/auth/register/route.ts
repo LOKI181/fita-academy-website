@@ -3,7 +3,7 @@ import { z } from "zod";
 import { randomUUID } from "node:crypto";
 
 import { hashPassword, signSession, setSessionCookie } from "@/lib/auth";
-import { getStore, addUser, setStore, publicUser } from "@/lib/store";
+import { getStore, addUser, publicUser } from "@/lib/store";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import type { User } from "@/lib/types";
 
@@ -14,7 +14,12 @@ const schema = z.object({
     .string()
     .transform((v) => v.replace(/\D/g, ""))
     .refine((v) => /^[6-9]\d{9}$/.test(v), "Enter a valid 10-digit mobile number"),
-  password: z.string().min(6, "Password must be at least 6 characters").max(200),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(200)
+    .regex(/[A-Z]/, "Password must include an uppercase letter")
+    .regex(/[0-9]/, "Password must include a number"),
   role: z.enum(["student", "trainer", "admin"]).default("student"),
   adminKey: z.string().optional(),
 });

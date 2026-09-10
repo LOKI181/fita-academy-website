@@ -6,10 +6,13 @@ import { brand, branches, categories } from "@/lib/content";
 
 const companyLinks = [
   { label: "About FITA", href: "/about" },
-  { label: "Placement", href: "/placement" },
-  { label: "Trainers", href: "/trainers" },
-  { label: "Reviews", href: "/reviews" },
-  { label: "Resources", href: "/resources" },
+  { label: "Master Programs", href: "/programs" },
+  { label: "Online Courses", href: "/online-courses" },
+  { label: "Success Stories", href: "/success-stories" },
+  { label: "Careers", href: "/careers" },
+  { label: "Corporate Training", href: "/business/corporate-training" },
+  { label: "Hire From FITA", href: "/business/hire-from-fita" },
+  { label: "Become an Instructor", href: "/become-instructor" },
   { label: "Book a Demo Class", href: "/demo" },
 ];
 

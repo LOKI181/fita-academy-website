@@ -25,7 +25,7 @@ export function InstagramFeed() {
         if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
         setPosts(data.posts || []);
-      } catch (err) {
+      } catch {
         setError('Unable to load Instagram feed');
       } finally {
         setLoading(false);

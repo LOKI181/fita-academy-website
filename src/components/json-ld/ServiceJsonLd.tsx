@@ -1,5 +1,3 @@
-import { branches } from "@/lib/content";
-
 interface ServiceJsonLdProps {
   name: string;
   description: string;
