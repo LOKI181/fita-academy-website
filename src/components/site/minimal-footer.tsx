@@ -1,90 +1,110 @@
 import Link from "next/link";
-import { Mail, Phone } from "lucide-react";
+import { Mail, MessageCircle } from "lucide-react";
 
 import { Logo } from "@/components/site/logo";
 import { brand } from "@/lib/content";
 
-const footerLinks = [
+const navLinks = [
   { label: "Courses", href: "/courses" },
   { label: "Programs", href: "/programs" },
-  { label: "Placements", href: "/placement" },
+  { label: "Placement", href: "/placement" },
   { label: "Branches", href: "/branches" },
-  { label: "Resources", href: "/resources" },
   { label: "About", href: "/about" },
 ];
 
-const legalLinks = [
-  { label: "Privacy", href: "/privacy" },
-  { label: "Terms", href: "/terms" },
-  { label: "Refund", href: "/refund" },
+const portalLinks = [
+  { label: "Student Login", href: "/login" },
+  { label: "Create Account", href: "/register" },
+  { label: "Help & Support", href: "/contact" },
 ];
 
 export function MinimalFooter() {
   return (
-    <footer className="border-t border-border bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr]">
+    <footer className="relative bg-secondary border-t border-border/60 pt-10 md:pt-12 pb-6 overflow-hidden">
+      <div className="w-full max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-8 mb-8 border-b border-border/60">
           {/* Brand */}
-          <div>
+          <div className="lg:col-span-6 flex flex-col items-start text-left">
             <Logo />
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Learn.
-              <br />
-              Build.
-              <br />
-              Grow.
+            <p className="mt-3 text-xs md:text-sm text-muted-foreground max-w-md mb-4 leading-relaxed">
+              Focus&apos;d IT Academy — Chennai&apos;s trusted IT training &amp;
+              placement institute. 120+ career courses, real projects and
+              10,000+ students placed since 1999.
             </p>
-            <div className="mt-5 flex flex-col gap-2 text-sm text-muted-foreground">
-              <a
-                href={`tel:${brand.phone.replace(/\s/g, "")}`}
-                className="flex items-center gap-2 hover:text-foreground"
-              >
-                <Phone className="size-4 text-primary" aria-hidden />
-                {brand.phone}
-              </a>
+            <div className="flex items-center gap-3">
               <a
                 href={`mailto:${brand.email}`}
-                className="flex items-center gap-2 hover:text-foreground"
+                className="p-2.5 rounded-lg bg-background hover:bg-border/50 border border-border text-muted-foreground hover:text-primary transition-colors duration-300"
+                aria-label="Email"
               >
-                <Mail className="size-4 text-primary" aria-hidden />
-                {brand.email}
+                <Mail className="size-4" aria-hidden />
+              </a>
+              <a
+                href={brand.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2.5 rounded-lg bg-background hover:bg-border/50 border border-border text-muted-foreground hover:text-primary transition-colors duration-300"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle className="size-4" aria-hidden />
               </a>
             </div>
           </div>
 
-          {/* Links */}
-          <nav aria-label="Footer">
-            <ul className="space-y-3 text-sm">
-              {footerLinks.map((l) => (
+          {/* Navigation */}
+          <div className="lg:col-span-3 text-left">
+            <h4 className="text-xs font-bold font-display uppercase tracking-widest text-foreground mb-4">
+              Navigation
+            </h4>
+            <ul className="space-y-3 text-xs md:text-sm">
+              {navLinks.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link
+                    href={l.href}
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
                     {l.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </nav>
+          </div>
 
-          {/* Social / Legal */}
-          <div>
-            <p className="text-sm font-medium text-foreground">Connect</p>
-            <div className="mt-3 flex gap-4 text-sm text-muted-foreground">
-              <a href="https://instagram.com/fitaacademy" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">Instagram</a>
-              <a href="https://linkedin.com/company/fitaacademy" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">LinkedIn</a>
-              <a href="https://youtube.com/@fitaacademy" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">YouTube</a>
-            </div>
-            <div className="mt-6 flex gap-4 text-xs text-muted-foreground">
-              {legalLinks.map((l) => (
-                <Link key={l.href} href={l.href} className="hover:text-foreground">
-                  {l.label}
-                </Link>
+          {/* Portal */}
+          <div className="lg:col-span-3 text-left">
+            <h4 className="text-xs font-bold font-display uppercase tracking-widest text-foreground mb-4">
+              Portal Access
+            </h4>
+            <ul className="space-y-3 text-xs md:text-sm">
+              {portalLinks.map((l) => (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {l.label}
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border pt-6 text-center text-xs text-muted-foreground">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} {brand.name}. All rights reserved.</p>
+          <div className="flex gap-4">
+            <Link href="/privacy" className="hover:text-primary transition-colors">
+              Privacy Policy
+            </Link>
+            <span>•</span>
+            <Link href="/terms" className="hover:text-primary transition-colors">
+              Terms &amp; Conditions
+            </Link>
+            <span>•</span>
+            <Link href="/refund" className="hover:text-primary transition-colors">
+              Refund Policy
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

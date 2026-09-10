@@ -1,119 +1,84 @@
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { CourseSearch } from "@/components/site/course-search";
 import { FadeIn } from "@/components/motion";
-import { FloatingTech } from "@/components/shared/floating-tech";
-import { SocialProof } from "@/components/shared/social-proof";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
-import { AmbientFloat } from "@/components/shared/ambient-float";
-import { courses } from "@/lib/content";
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-background via-background to-muted/30">
-      {/* Ambient floating effects */}
-      <AmbientFloat />
+    <section className="relative pt-28 sm:pt-32 md:pt-40 pb-16 md:pb-20 overflow-hidden bg-background">
+      {/* Gradient orbs */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,237,100,0.08)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-white/5 rounded-full blur-[140px] pointer-events-none" />
 
-      {/* Giant Background Text */}
-      <div className="hero-bg-text" aria-hidden>
-        FITA
-      </div>
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center">
+        <FadeIn preset="fade-up" delay={0.1}>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-semibold tracking-wider uppercase mb-5">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-ping" />
+            IT Training &amp; Placement Institute
+          </div>
+        </FadeIn>
 
-      {/* Floating Tech Objects */}
-      <FloatingTech />
+        <FadeIn preset="fade-up" delay={0.2}>
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-display font-extrabold text-white tracking-tight leading-tight mb-4">
+            Learn. Build.{" "}
+            <span className="text-primary">Get Hired.</span>
+          </h1>
+        </FadeIn>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16 lg:py-32 lg:px-8">
-        <div>
-          <FadeIn preset="fade-up" delay={0.1}>
-            <SocialProof />
-          </FadeIn>
+        <FadeIn preset="fade-up" delay={0.3}>
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+            Industry-focused IT training with real projects, expert trainers and
+            placement support across 10+ cities in India.
+          </p>
+        </FadeIn>
 
-          <FadeIn preset="fade-up" delay={0.2}>
-            <h1 className="mt-7 font-heading text-[2.75rem] font-black leading-[0.95] tracking-tight text-foreground sm:text-5xl lg:text-6xl xl:text-7xl">
-              Build your
-              <br />
-              next <span className="organic-underline text-primary">career</span>
-            </h1>
-          </FadeIn>
+        <FadeIn preset="fade-up" delay={0.4}>
+          <div className="flex flex-wrap gap-4 items-center justify-center">
+            <Button
+              asChild
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-full shadow-lg shadow-primary/20 hover:scale-[1.03] transition-all"
+            >
+              <Link href="/courses">
+                Explore Courses <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-border hover:border-primary text-white hover:text-primary bg-secondary/50 hover:bg-secondary/80 rounded-full font-bold transition-all"
+            >
+              <Link href="/enquire">
+                Talk to a Counsellor <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </Button>
+          </div>
+        </FadeIn>
 
-          <FadeIn preset="fade-up" delay={0.35}>
-            <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
-              Industry-focused training with real projects, expert trainers and
-              placement support across 10+ cities.
-            </p>
-          </FadeIn>
-
-          <FadeIn preset="fade-up" delay={0.5}>
-            <div className="mt-7">
-              <CourseSearch courses={courses} />
-            </div>
-          </FadeIn>
-
-          <FadeIn preset="fade-up" delay={0.6}>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="btn-press glow-primary-hover">
-                <Link href="/courses">
-                  Explore Courses <ArrowRight aria-hidden className="ml-1" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="btn-press">
-                <Link href="/demo">Book a Free Demo</Link>
-              </Button>
-            </div>
-          </FadeIn>
-        </div>
-
-        <FadeIn preset="scale-in" delay={0.3} className="hidden lg:block">
-          <div className="relative">
-            {/* Glass Card with Stats */}
-            <div className="liquid-glass clay rounded-3xl p-8 sm:p-10">
-              <div className="mb-6 flex items-center gap-2 text-sm font-medium text-primary">
-                <Sparkles className="size-4" aria-hidden />
-                Chennai&apos;s most trusted IT institute
-              </div>
-              <p className="font-heading text-2xl font-bold leading-snug text-foreground">
-                From non-IT backgrounds to{" "}
-                <span className="text-primary">full-stack developers</span>,
-                data analysts and cloud engineers.
+        {/* Stats */}
+        <FadeIn preset="fade-up" delay={0.5}>
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-8 sm:gap-12">
+            <div className="text-center">
+              <p className="font-heading text-2xl sm:text-3xl font-black text-primary">
+                <AnimatedCounter target={10000} suffix="+" />
               </p>
-
-              {/* Animated Stat Grid */}
-              <div className="mt-8 grid grid-cols-2 gap-4">
-                <div className="clay rounded-2xl bg-background/80 p-5 text-center">
-                  <p className="font-heading text-3xl font-black text-primary">
-                    <AnimatedCounter target={10000} suffix="+" />
-                  </p>
-                  <p className="mt-1 text-xs font-medium text-muted-foreground">
-                    Students placed
-                  </p>
-                </div>
-                <div className="clay rounded-2xl bg-background/80 p-5 text-center">
-                  <p className="font-heading text-3xl font-black text-primary">
-                    <AnimatedCounter target={3000} suffix="+" />
-                  </p>
-                  <p className="mt-1 text-xs font-medium text-muted-foreground">
-                    Hiring partners
-                  </p>
-                </div>
-                <div className="clay rounded-2xl bg-background/80 p-5 text-center">
-                  <p className="font-heading text-3xl font-black text-primary">
-                    <AnimatedCounter target={120} suffix="+" />
-                  </p>
-                  <p className="mt-1 text-xs font-medium text-muted-foreground">
-                    Career courses
-                  </p>
-                </div>
-                <div className="clay rounded-2xl bg-background/80 p-5 text-center">
-                  <p className="font-heading text-3xl font-black text-primary">
-                    <AnimatedCounter target={25} suffix="+" />
-                  </p>
-                  <p className="mt-1 text-xs font-medium text-muted-foreground">
-                    Years of trust
-                  </p>
-                </div>
-              </div>
+              <p className="text-xs text-muted-foreground">Students placed</p>
+            </div>
+            <div className="text-center">
+              <p className="font-heading text-2xl sm:text-3xl font-black text-primary">
+                <AnimatedCounter target={3000} suffix="+" />
+              </p>
+              <p className="text-xs text-muted-foreground">Hiring partners</p>
+            </div>
+            <div className="text-center">
+              <p className="font-heading text-2xl sm:text-3xl font-black text-primary">
+                <AnimatedCounter target={120} suffix="+" />
+              </p>
+              <p className="text-xs text-muted-foreground">Career courses</p>
             </div>
           </div>
         </FadeIn>
