@@ -26,7 +26,7 @@ export function PopularCourses() {
             </Button>
           </div>
         </ScrollReveal>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 stagger-children">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {courses.slice(0, 6).map((course) => (
             <CourseCard key={course.slug} course={course} />
           ))}
