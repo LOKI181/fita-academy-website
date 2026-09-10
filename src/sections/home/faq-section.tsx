@@ -10,7 +10,7 @@ import { homeFaqs } from "@/lib/content";
 export function FaqSection() {
   return (
     <section className="border-t border-border bg-muted/40">
-      <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
         <SectionHeader
           eyebrow="FAQs"
           title="Frequently asked questions"

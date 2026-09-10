@@ -11,7 +11,7 @@ export function ReviewsPreview() {
     reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
   return (
     <section className="border-y border-border bg-muted/40">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
         <SectionHeader
           eyebrow="Student reviews"
           title="10,000+ careers started with a review like yours"

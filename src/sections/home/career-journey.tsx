@@ -63,7 +63,7 @@ export function CareerJourney() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="section-editorial mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+    <section ref={sectionRef} className="section-editorial mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
       <div className="text-center">
         <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold text-primary">
           Career Journey
