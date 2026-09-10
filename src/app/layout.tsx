@@ -3,7 +3,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/site/header";
-import { Footer } from "@/components/site/footer";
+import { MinimalFooter } from "@/components/site/minimal-footer";
 import { ScrollProgress } from "@/components/site/scroll-progress";
 import { SkipLink } from "@/components/site/skip-link";
 import { WhatsAppFloat } from "@/components/site/wa-float";
@@ -110,7 +110,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main id="main" className="flex-1">
             {children}
           </main>
-          <Footer />
+          <MinimalFooter />
           <WhatsAppFloat />
           <Toaster position="bottom-right" />
           {gaId && <GoogleAnalytics />}
