@@ -6,6 +6,8 @@ import { Footer } from "@/components/site/footer";
 import { ScrollProgress } from "@/components/site/scroll-progress";
 import { SkipLink } from "@/components/site/skip-link";
 import { WhatsAppFloat } from "@/components/site/wa-float";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import Script from "next/script";
 import "./globals.css";
 
 const inter = Inter({
@@ -50,11 +52,35 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID
+
   return (
     <html
       lang="en"
       className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
+      <head>
+        {gaId && (
+          <>
+            <Script
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+            />
+            <Script
+              id="ga-init"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${gaId}');
+                `
+              }}
+            />
+          </>
+        )}
+      </head>
       <body className="min-h-full flex flex-col">
         <SkipLink />
         <ScrollProgress />
@@ -65,6 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <WhatsAppFloat />
         <Toaster position="bottom-right" />
+        {gaId && <GoogleAnalytics />}
       </body>
     </html>
   );
