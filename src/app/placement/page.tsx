@@ -6,7 +6,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/shared/section-header";
 import { ReviewCard } from "@/components/shared/review-card";
-import { partnerLogos, partnerStats, reviews } from "@/lib/content";
+import { ScrollReveal } from "@/components/shared/scroll-reveal";
+import { AnimatedCounter } from "@/components/shared/animated-counter";
+import { partnerLogos, reviews } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Placement Support",
@@ -38,75 +40,118 @@ const steps = [
   },
 ];
 
+const stats = [
+  { value: 10000, suffix: "+", label: "Students placed" },
+  { value: 3000, suffix: "+", label: "Hiring partners" },
+  { value: 573, suffix: "", label: "Current vacancies" },
+  { value: 264, suffix: "", label: "Companies approached" },
+];
+
 export default function PlacementPage() {
   return (
     <>
-      <section className="bg-primary text-primary-foreground">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-          <SectionHeader
-            eyebrow="Placement"
-            title="Your first job, on purpose"
-            sub="Placement support isn't a guarantee — it's a system. Resume, portfolio, mock interviews and employer referrals, run like a process from day one."
-            className="[&_h2]:text-white [&_p]:text-white/80 [&_span]:bg-white/10 [&_span]:text-white"
-          />
-          <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {partnerStats.map((s) => (
-              <div key={s.label} className="rounded-2xl bg-white/10 p-6 text-center ring-1 ring-white/15">
-                <p className="font-heading text-3xl font-bold sm:text-4xl">{s.value}</p>
-                <p className="mt-1 text-xs font-medium text-white/80 sm:text-sm">{s.label}</p>
+      {/* Hero with animated counters */}
+      <section className="relative overflow-hidden bg-primary text-primary-foreground">
+        <div className="hero-bg-text" aria-hidden style={{ color: "rgba(255,255,255,0.04)" }}>PLACEMENT</div>
+        <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+          <ScrollReveal>
+            <SectionHeader
+              eyebrow="Placement"
+              title="Your first job, on purpose"
+              sub="Placement support isn't a guarantee — it's a system. Resume, portfolio, mock interviews and employer referrals, run like a process from day one."
+              className="[&_h2]:text-white [&_p]:text-white/80 [&_span]:bg-white/10 [&_span]:text-white"
+            />
+          </ScrollReveal>
+          <ScrollReveal delay={100}>
+            <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+              {stats.map((s) => (
+                <div key={s.label} className="rounded-2xl bg-white/10 p-6 text-center ring-1 ring-white/15">
+                  <p className="font-heading text-3xl font-black sm:text-4xl">
+                    <AnimatedCounter target={s.value} suffix={s.suffix} />
+                  </p>
+                  <p className="mt-1 text-xs font-medium text-white/80 sm:text-sm">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* Steps - bento grid */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <ScrollReveal>
+          <SectionHeader align="left" eyebrow="How it works" title="The 4-step placement process" />
+        </ScrollReveal>
+        <ScrollReveal delay={100}>
+          <div className="mt-10 bento-grid">
+            {steps.map((s, i) => (
+              <div
+                key={s.title}
+                className={`bento-item bg-muted/60 border border-border ${
+                  i === 0 ? "bento-item-span-2 bg-primary text-primary-foreground" : ""
+                }`}
+              >
+                <span
+                  className={`grid size-11 place-items-center rounded-xl ${
+                    i === 0 ? "bg-white/20 text-white" : "bg-accent text-primary"
+                  }`}
+                >
+                  <s.icon className="size-5" aria-hidden />
+                </span>
+                <h3 className={`mt-4 font-heading text-base font-bold ${i === 0 ? "text-white" : "text-foreground"}`}>
+                  {s.title}
+                </h3>
+                <p className={`mt-1.5 text-sm leading-relaxed ${i === 0 ? "text-white/80" : "text-muted-foreground"}`}>
+                  {s.text}
+                </p>
               </div>
             ))}
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <SectionHeader align="left" eyebrow="How it works" title="The 4-step placement process" />
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((s) => (
-            <div key={s.title} className="rounded-2xl border border-border bg-background p-6">
-              <span className="grid size-11 place-items-center rounded-xl bg-accent text-primary">
-                <s.icon className="size-5" aria-hidden />
-              </span>
-              <h3 className="mt-4 font-heading text-base font-bold text-foreground">{s.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{s.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
+      {/* Hiring partners */}
       <section className="border-y border-border bg-muted/40">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Hiring partners"
-            title="Companies that recruit from FITA"
-            sub="A snapshot of teams that have hired our students in the last 12 months."
-          />
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            {partnerLogos.map((name) => (
-              <span
-                key={name}
-                className="flex items-center gap-2 rounded-xl border border-border bg-background px-5 py-3 font-heading text-sm font-semibold tracking-wide"
-              >
-                <Building2 className="size-4 text-primary" aria-hidden /> {name}
+          <ScrollReveal>
+            <SectionHeader
+              eyebrow="Hiring partners"
+              title="Companies that recruit from FITA"
+              sub="A snapshot of teams that have hired our students in the last 12 months."
+            />
+          </ScrollReveal>
+          <ScrollReveal delay={100}>
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+              {partnerLogos.map((name) => (
+                <span
+                  key={name}
+                  className="card-premium flex items-center gap-2 rounded-xl border border-border bg-background px-5 py-3 font-heading text-sm font-semibold tracking-wide"
+                >
+                  <Building2 className="size-4 text-primary" aria-hidden /> {name}
+                </span>
+              ))}
+              <span className="rounded-xl bg-accent px-5 py-3 font-heading text-sm font-bold text-accent-foreground">
+                + 90 more
               </span>
-            ))}
-            <span className="rounded-xl bg-accent px-5 py-3 font-heading text-sm font-bold text-accent-foreground">
-              + 90 more
-            </span>
-          </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
+      {/* Success stories */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <SectionHeader align="left" eyebrow="Success stories" title="Placed students, in their words" />
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {reviews.slice(0, 3).map((r) => (
-            <ReviewCard key={r.name} review={r} />
-          ))}
-        </div>
+        <ScrollReveal>
+          <SectionHeader align="left" eyebrow="Success stories" title="Placed students, in their words" />
+        </ScrollReveal>
+        <ScrollReveal delay={100}>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {reviews.slice(0, 3).map((r) => (
+              <ReviewCard key={r.name} review={r} />
+            ))}
+          </div>
+        </ScrollReveal>
         <div className="mt-10 flex justify-center">
-          <Button asChild size="lg">
+          <Button asChild size="lg" className="btn-press">
             <Link href="/reviews">
               Read all student reviews <ArrowRight aria-hidden />
             </Link>
@@ -114,9 +159,12 @@ export default function PlacementPage() {
         </div>
       </section>
 
+      {/* FAQ */}
       <section className="border-t border-border bg-muted/40">
         <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
-          <SectionHeader eyebrow="FAQs" title="Placement questions, answered" />
+          <ScrollReveal>
+            <SectionHeader eyebrow="FAQs" title="Placement questions, answered" />
+          </ScrollReveal>
           <Accordion type="single" collapsible className="mt-10">
             <AccordionItem value="q1">
               <AccordionTrigger className="text-left font-medium">
