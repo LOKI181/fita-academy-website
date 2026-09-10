@@ -74,7 +74,15 @@ export async function POST(req: Request) {
     createdAt: new Date().toISOString(),
   };
 
-  await addUser(user);
+  try {
+    await addUser(user);
+  } catch (err) {
+    console.error("[register:db]", err);
+    return NextResponse.json(
+      { error: "Failed to create account. Please ensure the Supabase 'users' table exists." },
+      { status: 500 }
+    );
+  }
 
   const token = await signSession(user);
   await setSessionCookie(token);

@@ -51,6 +51,12 @@ export async function getStore(): Promise<StoredData> {
       supabase.from("enquiries").select("*"),
     ]);
 
+    // Log Supabase errors for debugging
+    if (usersRes.error) console.error("[store:users]", usersRes.error.message);
+    if (enrolRes.error) console.error("[store:enrollments]", enrolRes.error.message);
+    if (certRes.error) console.error("[store:certificates]", certRes.error.message);
+    if (enqRes.error) console.error("[store:enquiries]", enqRes.error.message);
+
     memoryCache = {
       users: usersRes.data as User[] || [],
       enrollments: enrolRes.data as Enrollment[] || [],
@@ -58,7 +64,8 @@ export async function getStore(): Promise<StoredData> {
       certificates: certRes.data as Certificate[] || [],
       enquiries: enqRes.data as Record<string, unknown>[] || [],
     };
-  } catch {
+  } catch (err) {
+    console.error("[store:connect]", err);
     memoryCache = {
       users: [],
       enrollments: [],

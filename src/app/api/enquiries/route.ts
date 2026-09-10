@@ -53,7 +53,7 @@ export async function POST(req: Request) {
     await addEnquiry(record);
   } catch (err) {
     console.error('[enquiries:store]', err);
-    return NextResponse.json({ error: "Failed to save enquiry" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to save enquiry. Please ensure the Supabase 'enquiries' table exists." }, { status: 500 });
   }
 
   // Send emails (best-effort, never blocks the user)
