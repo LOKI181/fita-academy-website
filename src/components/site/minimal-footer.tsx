@@ -40,12 +40,12 @@ export function MinimalFooter() {
     <footer className="relative overflow-hidden border-t border-border bg-mist">
       <div className="pointer-events-none absolute inset-x-0 -top-40 h-80 bg-[radial-gradient(ellipse_at_center,color-mix(in_oklab,var(--primary)_12%,transparent),transparent_70%)]" />
 
-      <div className="container-x relative py-10 lg:py-16">
-        <div className="grid gap-8 grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-12">
+      <div className="container-x relative py-8 sm:py-10 lg:py-16">
+        <div className="grid gap-6 grid-cols-2 sm:gap-8 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-12">
           {/* Brand column — full width on mobile */}
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" aria-label="FITA Academy — home" className="inline-flex flex-col leading-none">
-              <span className="font-heading text-2xl font-black tracking-[-0.03em] text-foreground">
+              <span className="font-heading text-xl font-black tracking-[-0.03em] text-foreground sm:text-2xl">
                 FITA
                 <span className="ml-2 align-middle text-xs font-bold uppercase tracking-[0.28em] text-primary">
                   Academy
@@ -56,12 +56,12 @@ export function MinimalFooter() {
               </span>
             </Link>
 
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-4 max-w-sm text-xs leading-relaxed text-muted-foreground sm:mt-5 sm:text-sm">
               Chennai&apos;s trusted IT training &amp; placement institute since 1999.
               120+ career courses, real production projects and 10,000+ students placed.
             </p>
 
-            <div className="mt-6 flex flex-col gap-2.5 text-sm">
+            <div className="mt-4 flex flex-col gap-2 text-xs sm:mt-6 sm:gap-2.5 sm:text-sm">
               <a
                 href={`tel:${brand.phone.replace(/\s/g, "")}`}
                 className="group flex items-center gap-2.5 text-muted-foreground transition-colors hover:text-foreground"
@@ -88,7 +88,7 @@ export function MinimalFooter() {
               </span>
             </div>
 
-            <div className="chip mt-6">
+            <div className="chip mt-4 text-[0.65rem] sm:mt-6 sm:text-xs">
               <Star className="size-3.5 fill-current" aria-hidden />
               4.8/5 from 500+ Google reviews
             </div>
@@ -96,7 +96,7 @@ export function MinimalFooter() {
 
           {/* Link columns */}
           <nav aria-label="Courses">
-            <h3 className="font-heading text-xs font-bold uppercase tracking-[0.16em] text-foreground">
+            <h3 className="font-heading text-[0.6rem] font-bold uppercase tracking-[0.14em] text-foreground sm:text-xs sm:tracking-[0.16em]">
               Courses
             </h3>
             <ul className="mt-3 space-y-2 text-sm lg:mt-5 lg:space-y-3">
@@ -114,7 +114,7 @@ export function MinimalFooter() {
           </nav>
 
           <nav aria-label="Company">
-            <h3 className="font-heading text-xs font-bold uppercase tracking-[0.16em] text-foreground">
+            <h3 className="font-heading text-[0.6rem] font-bold uppercase tracking-[0.14em] text-foreground sm:text-xs sm:tracking-[0.16em]">
               Company
             </h3>
             <ul className="mt-3 space-y-2 text-sm lg:mt-5 lg:space-y-3">
@@ -132,10 +132,10 @@ export function MinimalFooter() {
           </nav>
 
           <div>
-            <h3 className="font-heading text-xs font-bold uppercase tracking-[0.16em] text-foreground">
+            <h3 className="font-heading text-[0.6rem] font-bold uppercase tracking-[0.14em] text-foreground sm:text-xs sm:tracking-[0.16em]">
               Connect
             </h3>
-            <ul className="mt-3 space-y-2 text-sm lg:mt-5 lg:space-y-3">
+            <ul className="mt-2 space-y-1.5 text-xs sm:mt-3 sm:space-y-2 sm:text-sm lg:mt-5 lg:space-y-3">
               {socials.map((s) => (
                 <li key={s.href}>
                   <a
@@ -154,7 +154,7 @@ export function MinimalFooter() {
               ))}
             </ul>
 
-            <h3 className="mt-8 font-heading text-xs font-bold uppercase tracking-[0.16em] text-foreground">
+            <h3 className="mt-6 font-heading text-[0.6rem] font-bold uppercase tracking-[0.14em] text-foreground sm:mt-8 sm:text-xs sm:tracking-[0.16em]">
               Legal
             </h3>
             <ul className="mt-3 space-y-2 text-sm lg:mt-5 lg:space-y-3">

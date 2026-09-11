@@ -134,8 +134,8 @@ export default async function CoursePage({
         <div className="aurora opacity-60" aria-hidden />
         <div className="grid-lines opacity-70" aria-hidden />
 
-        <div className="container-x relative z-10 py-8 lg:py-12">
-          <Breadcrumb className="mb-5">
+        <div className="container-x relative z-10 py-6 lg:py-10">
+          <Breadcrumb className="mb-4">
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -169,15 +169,15 @@ export default async function CoursePage({
                 <span className="eyebrow">{category?.title}</span>
               </div>
 
-              <h1 className="mt-4 font-heading text-[2rem] font-black leading-[1.05] tracking-[-0.035em] text-foreground sm:text-4xl lg:text-[2.75rem]">
+              <h1 className="mt-3 font-heading text-[1.5rem] font-black leading-[1.05] tracking-[-0.035em] text-foreground sm:text-3xl sm:mt-4 lg:text-[2.75rem]">
                 {course.title} Training
               </h1>
 
-              <p className="mt-5 max-w-2xl text-[1.0625rem] leading-relaxed text-muted-foreground">
+              <p className="mt-3 max-w-2xl text-[0.9375rem] leading-relaxed text-muted-foreground sm:text-[1.0625rem] sm:mt-5">
                 {course.blurb}
               </p>
 
-              <dl className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 text-[0.8125rem] text-muted-foreground">
+              <dl className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[0.75rem] text-muted-foreground sm:mt-7 sm:gap-x-6 sm:gap-y-3 sm:text-[0.8125rem]">
                 <div className="flex items-center gap-2">
                   <dt className="sr-only">Rating</dt>
                   <StarRating rating={course.rating} size="size-4" />
@@ -205,20 +205,20 @@ export default async function CoursePage({
             </div>
 
             {/* Enrol card — below on mobile, right side on desktop */}
-            <aside className="w-full shrink-0 surface p-6 lg:w-[360px] lg:sticky lg:top-20 lg:z-10">
+            <aside className="w-full shrink-0 surface p-4 sm:p-6 lg:w-[340px] lg:sticky lg:top-16 lg:z-10">
               <div className="flex items-end justify-between gap-4">
                 <div>
-                  <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                  <p className="text-[0.6rem] font-bold uppercase tracking-[0.12em] text-muted-foreground sm:text-[0.68rem]">
                     Course fee · all inclusive
                   </p>
-                  <p className="mt-1 font-heading text-3xl font-black tracking-[-0.03em] text-foreground">
+                  <p className="mt-1 font-heading text-2xl font-black tracking-[-0.03em] text-foreground sm:text-3xl">
                     {course.fees}
                   </p>
                 </div>
                 <span className="chip shrink-0">EMI available</span>
               </div>
 
-              <ul className="mt-5 space-y-2.5 text-[0.8125rem] text-muted-foreground">
+              <ul className="mt-4 space-y-2 text-[0.75rem] text-muted-foreground sm:mt-5 sm:space-y-2.5 sm:text-[0.8125rem]">
                 <li className="flex items-center gap-2.5">
                   <MapPin className="size-4 shrink-0 text-primary" aria-hidden />
                   {course.mode.join(" & ")} · All branches
@@ -229,8 +229,8 @@ export default async function CoursePage({
                 </li>
               </ul>
 
-              <div className="mt-6 flex flex-col gap-2.5">
-                <Button asChild size="lg" className="btn-press h-11 gap-2 px-6">
+              <div className="mt-4 flex flex-col gap-2 sm:mt-6 sm:gap-2.5">
+                <Button asChild size="lg" className="btn-press h-10 gap-2 px-5 text-[0.8125rem] sm:h-11 sm:px-6">
                   <Link href={`/enquire?course=${encodeURIComponent(course.title)}`}>
                     Enquire for this course <ArrowRight aria-hidden className="size-4" />
                   </Link>
@@ -239,7 +239,7 @@ export default async function CoursePage({
                   asChild
                   size="lg"
                   variant="outline"
-                  className="btn-press h-11 gap-2 bg-card px-6"
+                  className="btn-press h-10 gap-2 bg-card px-5 text-[0.8125rem] sm:h-11 sm:px-6"
                 >
                   <Link href="/demo">
                     Book a Free Demo Class <ArrowRight aria-hidden className="size-4" />
