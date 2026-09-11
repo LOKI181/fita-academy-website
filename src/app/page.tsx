@@ -13,7 +13,6 @@ import { EditorialSuccessStories } from "@/components/shared/editorial-success-s
 import { PremiumTrainers } from "@/sections/home/premium-trainers";
 import { TeamStats } from "@/sections/home/team-stats";
 import { NetworkBranches } from "@/sections/home/network-branches";
-import { InstagramSection } from "@/sections/home/instagram-section";
 import { PremiumCta } from "@/sections/home/premium-cta";
 import { FaqSection } from "@/sections/home/faq-section";
 import { LocalBusinessJsonLd } from "@/components/json-ld/LocalBusinessJsonLd";
@@ -37,7 +36,6 @@ export default function Home() {
       <PremiumTrainers />
       <TeamStats />
       <NetworkBranches />
-      <InstagramSection />
       <PremiumCta />
       <FaqSection />
     </>
