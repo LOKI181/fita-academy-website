@@ -23,7 +23,7 @@ export function SocialProof() {
       <span className="font-semibold text-foreground">10K+ placed</span>
       <span className="h-3.5 w-px bg-border" aria-hidden />
       <span className="flex items-center gap-1">
-        <Star className="size-3.5 fill-current text-primary" aria-hidden />
+        <Star className="size-3.5 fill-current text-amber-400" aria-hidden />
         <span className="font-semibold text-foreground">4.8</span>
         <span className="text-muted-foreground">rating</span>
       </span>

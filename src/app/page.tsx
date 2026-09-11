@@ -1,7 +1,6 @@
 import { HeroSection } from "@/sections/home/hero-section";
 import { TrustBar } from "@/sections/home/trust-bar";
 import { ServiceTags } from "@/sections/home/service-tags";
-import { AboutFita } from "@/sections/home/about-fita";
 import { ImpactMetrics } from "@/sections/home/impact-metrics";
 import { CategoriesGrid } from "@/sections/home/categories-grid";
 import { PopularCourses } from "@/sections/home/popular-courses";
@@ -24,7 +23,6 @@ export default function Home() {
       <HeroSection />
       <TrustBar />
       <ServiceTags />
-      <AboutFita />
       <ImpactMetrics />
       <WhyFita />
       <HowWeWork />

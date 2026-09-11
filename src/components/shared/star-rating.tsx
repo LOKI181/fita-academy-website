@@ -17,7 +17,7 @@ export function StarRating({
       aria-label={`Rated ${rating} out of 5`}
     >
       {[1, 2, 3, 4, 5].map((i) => {
-        const fill = rating >= i ? "fill-current text-primary" : "fill-none text-muted-foreground/40";
+        const fill = rating >= i ? "fill-current text-amber-400" : "fill-none text-muted-foreground/40";
         return <Star key={i} className={cn(size, fill)} aria-hidden />;
       })}
     </span>

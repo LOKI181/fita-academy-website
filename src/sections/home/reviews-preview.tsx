@@ -21,7 +21,7 @@ export function ReviewsPreview() {
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm">
             <span className="flex items-center gap-1 font-heading text-lg font-bold text-foreground">
               {avg.toFixed(1)}
-              <Star className="size-4 fill-current text-primary" aria-hidden />
+              <Star className="size-4 fill-current text-amber-400" aria-hidden />
             </span>
             <span className="text-muted-foreground">average · 500+ Google reviews</span>
           </div>

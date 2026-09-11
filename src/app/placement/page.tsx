@@ -8,7 +8,6 @@ import { SectionHeader } from "@/components/shared/section-header";
 import { ReviewCard } from "@/components/shared/review-card";
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
-import { VisualFrame } from "@/components/shared/visual-frame";
 import { partnerLogos, reviews } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -105,8 +104,10 @@ export default function PlacementPage() {
               {steps.map((s, i) => (
                 <div
                   key={s.title}
-                  className={`card-premium surface group relative overflow-hidden p-7 ${
-                    i === 0 ? "sm:col-span-2 bg-gradient-to-br from-primary to-blue-600 text-white" : ""
+                  className={`group relative overflow-hidden rounded-2xl border p-7 ${
+                    i === 0
+                      ? "sm:col-span-2 border-primary/20 bg-gradient-to-br from-primary to-blue-600 text-white"
+                      : "border-border bg-background"
                   }`}
                 >
                   <span className={`grid size-11 place-items-center rounded-xl ${
@@ -125,25 +126,6 @@ export default function PlacementPage() {
                   )}
                 </div>
               ))}
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* VisualFrame — offer letters */}
-      <section className="border-y border-border bg-mist">
-        <div className="container-x py-16">
-          <ScrollReveal>
-            <div className="mx-auto max-w-2xl">
-              <VisualFrame
-                variant="placement"
-                className="aspect-[5/4] w-full"
-                label="FITA Academy placement offers from top companies"
-              >
-                <p className="font-heading text-xl font-bold leading-snug text-white">
-                  Real offers from real companies.
-                </p>
-              </VisualFrame>
             </div>
           </ScrollReveal>
         </div>

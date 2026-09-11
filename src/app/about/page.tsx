@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/shared/page-hero";
 import { SectionHeader } from "@/components/shared/section-header";
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
-import { VisualFrame } from "@/components/shared/visual-frame";
 import { branches, stats, reviews } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -72,59 +71,6 @@ export default function AboutPage() {
         }
         sub="FITA Academy started in 1999 with one belief: IT careers should be accessible to anyone willing to learn."
       />
-
-      {/* Story + VisualFrame */}
-      <section className="section-pad">
-        <div className="container-x">
-          <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
-            <ScrollReveal>
-              <div className="space-y-5 text-[1.0625rem] leading-relaxed text-muted-foreground">
-                <p>
-                  We are an{" "}
-                  <strong className="font-semibold text-foreground">
-                    offline-first, outcome-obsessed
-                  </strong>{" "}
-                  training institute. Most of our students arrive with no coding background, a
-                  full-time job or studies, and a lot of doubt. They leave with a project
-                  portfolio, an interview-ready resume and an offer.
-                </p>
-                <p>
-                  That&apos;s why our courses are structured in modules you can actually follow —
-                  taught by engineers who use these exact skills every day, in classroom and live
-                  online formats.
-                </p>
-                <p>
-                  We don&apos;t claim magic or guarantees. We run a system — fundamentals,
-                  projects, mock interviews, referrals — and the system works when you show up.
-                </p>
-              </div>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button asChild size="lg" className="btn-press h-11 gap-2 px-6">
-                  <Link href="/courses">
-                    Explore courses
-                    <ArrowRight aria-hidden className="size-4" />
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="btn-press h-11 bg-card px-6">
-                  <Link href="/enquire">Talk to a counsellor</Link>
-                </Button>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={120}>
-              <VisualFrame
-                variant="about"
-                className="aspect-[4/3] w-full"
-                label="FITA Academy training centre — mentor and student collaboration"
-              >
-                <p className="max-w-[16rem] font-heading text-lg font-bold leading-snug text-white">
-                  Classroom + live online. Same trainers, same outcome.
-                </p>
-              </VisualFrame>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
 
       {/* Stats bar */}
       <ScrollReveal>
