@@ -27,7 +27,7 @@ export function AboutFita() {
           <ScrollReveal>
             <div className="relative">
               <VisualFrame
-                variant="grid"
+                variant="about"
                 className="aspect-[4/3] w-full"
                 label="FITA Academy trainers and students collaborating"
               >

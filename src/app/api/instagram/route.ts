@@ -53,31 +53,50 @@ function fallbackPayload() {
   return NextResponse.json({ posts, source: 'fallback' as const });
 }
 
+/** Extract a media URL from an Instagram item (handles nested shapes). */
+function resolveMediaUrl(item: Record<string, unknown>): string {
+  // Direct fields
+  const direct =
+    (typeof item.display_url === 'string' && item.display_url) ||
+    (typeof item.displayUrl === 'string' && item.displayUrl) ||
+    (typeof item.media_url === 'string' && item.media_url) ||
+    (typeof item.image_url === 'string' && item.image_url) ||
+    (typeof item.thumbnail_url === 'string' && item.thumbnail_url) ||
+    (typeof item.url === 'string' && item.url) ||
+    '';
+  if (direct) return direct;
+
+  // image_versions2.candidates[0].url (Instagram GraphQL shape)
+  const iv2 = item.image_versions2 as { candidates?: { url?: string }[] } | undefined;
+  if (Array.isArray(iv2?.candidates) && iv2.candidates[0]?.url) {
+    return iv2.candidates[0].url as string;
+  }
+
+  // video_versions (Reels/IGTV)
+  const vv = item.video_versions as { url?: string }[] | undefined;
+  if (Array.isArray(vv) && vv[0]?.url) return vv[0].url as string;
+
+  return '';
+}
+
 /** RapidAPI hosts differ in response shape; normalise the common ones. */
 function normalise(raw: unknown): InstagramPost[] {
   const data = raw as Record<string, unknown> | null | undefined;
+
+  // Unwrap nested response shapes: data.items, data.data, data.posts, data.result
+  const wrapped = data?.items ?? data?.data ?? data?.posts ?? data?.result;
   const list =
-    (Array.isArray(data?.items) && data.items) ||
-    (Array.isArray(data?.data) && data.data) ||
-    (Array.isArray(data?.posts) && data.posts) ||
-    (Array.isArray(data?.result) && data.result) ||
+    (Array.isArray(wrapped) && wrapped) ||
     (Array.isArray(raw) && raw) ||
     [];
 
   return (list as Record<string, unknown>[])
     .map((item, i) => {
-      const media =
-        (typeof item.display_url === 'string' && item.display_url) ||
-        (typeof item.displayUrl === 'string' && item.displayUrl) ||
-        (typeof item.media_url === 'string' && item.media_url) ||
-        (typeof item.image_url === 'string' && item.image_url) ||
-        (typeof item.thumbnail_url === 'string' && item.thumbnail_url) ||
-        '';
+      const media = resolveMediaUrl(item);
 
       const shortcode =
         (typeof item.shortcode === 'string' && item.shortcode) ||
-        (typeof item.shortCode === 'string' && item.shortCode) ||
-        '';
+        (typeof item.shortCode === 'string' && item.shortCode) || '';
 
       return {
         id: String(item.id ?? item.pk ?? shortcode ?? i),
@@ -124,11 +143,23 @@ export async function GET() {
 
   // RapidAPI Instagram scrapers expose different paths depending on the
   // vendor. Try the common shapes in order; the first JSON hit wins.
+  // Confirmed shapes for instagram-scraper-stable-api:
+  //   /get_media_data_v2.php?username=...    (user media feed)
+  //   /get_media_data_v2.php?media_code=...  (single post — verified)
+  //   /v1/posts?username_or_id_or_url=...
+  //   /v1/info?username_or_id_or_url=...
+  //   /user/feed?username=...
+  //   /get_user_info?... / /get_media_by_code?...
   const q = encodeURIComponent(USERNAME);
+  const sampleMediaCode = 'DLUWkieNc0u';
   const endpoints = [
-    `https://${host}/v1/info?username_or_id_or_url=${q}`,
+    `https://${host}/get_media_data_v2.php?username=${q}`,
+    `https://${host}/get_media_data_v2.php?username=${q}&limit=12`,
+    `https://${host}/get_media_data_v2.php?media_code=${sampleMediaCode}`,
     `https://${host}/v1/posts?username_or_id_or_url=${q}`,
+    `https://${host}/v1/info?username_or_id_or_url=${q}`,
     `https://${host}/user/feed?username=${q}`,
+    `https://${host}/get_user_info?username=${q}`,
   ];
 
   for (const url of endpoints) {

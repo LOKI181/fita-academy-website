@@ -116,7 +116,7 @@ export function HeroSection() {
           <FadeIn preset="fade-up" delay={0.35}>
             <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
               <VisualFrame
-                variant="aurora"
+                variant="hero"
                 className="aspect-[4/5] w-full sm:aspect-[5/5]"
                 label="FITA Academy classroom and project work"
               >

@@ -83,7 +83,7 @@ export default function AboutPage() {
 
             <ScrollReveal delay={120}>
               <VisualFrame
-                variant="orbit"
+                variant="hero"
                 className="aspect-[4/3] w-full"
                 label="FITA Academy training centre"
               >
