@@ -158,53 +158,8 @@ export default async function CoursePage({
           </Breadcrumb>
 
           <div className="grid gap-10 lg:grid-cols-[1fr_360px] lg:items-start">
-            <div>
-              <div className="flex flex-wrap items-center gap-3">
-                {course.badge ? (
-                  <span className="rounded-full bg-[color-mix(in_oklab,var(--primary)_10%,transparent)] px-3 py-1 text-[0.68rem] font-bold uppercase tracking-wide text-primary">
-                    {course.badge}
-                  </span>
-                ) : null}
-                <span className="eyebrow">{category?.title}</span>
-              </div>
-
-              <h1 className="mt-4 font-heading text-[2rem] font-black leading-[1.05] tracking-[-0.035em] text-foreground sm:text-4xl lg:text-[2.75rem]">
-                {course.title} Training
-              </h1>
-
-              <p className="mt-5 max-w-2xl text-[1.0625rem] leading-relaxed text-muted-foreground">
-                {course.blurb}
-              </p>
-
-              <dl className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 text-[0.8125rem] text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <dt className="sr-only">Rating</dt>
-                  <StarRating rating={course.rating} size="size-4" />
-                  <dd>
-                    <span className="font-semibold text-foreground">{course.rating}</span> (
-                    {course.reviews} reviews)
-                  </dd>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <dt className="sr-only">Enrolled</dt>
-                  <Users className="size-4 text-primary" aria-hidden />
-                  <dd>{course.students.toLocaleString("en-IN")}+ enrolled</dd>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <dt className="sr-only">Duration</dt>
-                  <Clock className="size-4 text-primary" aria-hidden />
-                  <dd>{course.duration}</dd>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <dt className="sr-only">Level</dt>
-                  <GraduationCap className="size-4 text-primary" aria-hidden />
-                  <dd>{course.level}</dd>
-                </div>
-              </dl>
-            </div>
-
-            {/* Enrol card */}
-            <aside className="surface p-6 lg:sticky lg:top-24">
+            {/* Enrol card — shows first on mobile */}
+            <aside className="order-1 surface p-6 lg:order-2 lg:sticky lg:top-24">
               <div className="flex items-end justify-between gap-4">
                 <div>
                   <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
@@ -252,6 +207,52 @@ export default async function CoursePage({
                 </Button>
               </div>
             </aside>
+
+            {/* Course info — shows second on mobile */}
+            <div className="order-2 lg:order-1">
+              <div className="flex flex-wrap items-center gap-3">
+                {course.badge ? (
+                  <span className="rounded-full bg-[color-mix(in_oklab,var(--primary)_10%,transparent)] px-3 py-1 text-[0.68rem] font-bold uppercase tracking-wide text-primary">
+                    {course.badge}
+                  </span>
+                ) : null}
+                <span className="eyebrow">{category?.title}</span>
+              </div>
+
+              <h1 className="mt-4 font-heading text-[2rem] font-black leading-[1.05] tracking-[-0.035em] text-foreground sm:text-4xl lg:text-[2.75rem]">
+                {course.title} Training
+              </h1>
+
+              <p className="mt-5 max-w-2xl text-[1.0625rem] leading-relaxed text-muted-foreground">
+                {course.blurb}
+              </p>
+
+              <dl className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 text-[0.8125rem] text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <dt className="sr-only">Rating</dt>
+                  <StarRating rating={course.rating} size="size-4" />
+                  <dd>
+                    <span className="font-semibold text-foreground">{course.rating}</span> (
+                    {course.reviews} reviews)
+                  </dd>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <dt className="sr-only">Enrolled</dt>
+                  <Users className="size-4 text-primary" aria-hidden />
+                  <dd>{course.students.toLocaleString("en-IN")}+ enrolled</dd>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <dt className="sr-only">Duration</dt>
+                  <Clock className="size-4 text-primary" aria-hidden />
+                  <dd>{course.duration}</dd>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <dt className="sr-only">Level</dt>
+                  <GraduationCap className="size-4 text-primary" aria-hidden />
+                  <dd>{course.level}</dd>
+                </div>
+              </dl>
+            </div>
           </div>
         </div>
       </section>
