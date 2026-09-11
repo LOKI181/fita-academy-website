@@ -57,8 +57,19 @@ export async function getStore(): Promise<StoredData> {
     if (certRes.error) console.error("[store:certificates]", certRes.error.message);
     if (enqRes.error) console.error("[store:enquiries]", enqRes.error.message);
 
+    const users = (usersRes.data || []).map((u: Record<string, unknown>) => ({
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      phone: u.phone,
+      role: u.role,
+      passwordHash: u.password_hash,
+      createdAt: u.created_at,
+      avatarName: u.avatar_name,
+    })) as User[];
+
     memoryCache = {
-      users: usersRes.data as User[] || [],
+      users,
       enrollments: enrolRes.data as Enrollment[] || [],
       batches: defaultBatches,
       certificates: certRes.data as Certificate[] || [],
@@ -79,13 +90,33 @@ export async function getStore(): Promise<StoredData> {
 }
 
 export async function addUser(user: User): Promise<void> {
-  const { error } = await supabase.from("users").insert(user);
+  const { error } = await supabase.from("users").insert({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    role: user.role,
+    password_hash: user.passwordHash,
+    created_at: user.createdAt,
+  });
   if (error) throw error;
   memoryCache = null;
 }
 
 export async function addEnquiry(enquiry: Record<string, unknown>): Promise<void> {
-  const { error } = await supabase.from("enquiries").insert(enquiry);
+  const { error } = await supabase.from("enquiries").insert({
+    intent: enquiry.intent ?? "enquiry",
+    name: enquiry.name,
+    phone: enquiry.phone,
+    email: enquiry.email,
+    branch: enquiry.branch ?? "",
+    course: enquiry.course ?? "",
+    mode: enquiry.mode ?? "",
+    message: enquiry.message ?? "",
+    page_path: enquiry.pagePath ?? "",
+    ip_hash: enquiry.ip_hash ?? "",
+    created_at: enquiry.created_at ?? new Date().toISOString(),
+  });
   if (error) throw error;
   memoryCache = null;
 }

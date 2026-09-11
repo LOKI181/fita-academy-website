@@ -22,7 +22,6 @@ const schema = z.object({
 
 export async function POST(req: Request) {
   const ip = getClientIp(req);
-
   if (!rateLimit(ip, "enquiries", 3, 60_000)) {
     return NextResponse.json(
       { error: "Too many requests — please wait a minute and try again." },
@@ -33,7 +32,8 @@ export async function POST(req: Request) {
   let body: unknown;
   try {
     body = await req.json();
-  } catch {
+  } catch (err) {
+    console.error('[enquiries] JSON parse error:', err);
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
