@@ -40,10 +40,10 @@ export function MinimalFooter() {
     <footer className="relative overflow-hidden border-t border-border bg-mist">
       <div className="pointer-events-none absolute inset-x-0 -top-40 h-80 bg-[radial-gradient(ellipse_at_center,color-mix(in_oklab,var(--primary)_12%,transparent),transparent_70%)]" />
 
-      <div className="container-x relative py-16">
-        <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
-          {/* Brand column */}
-          <div>
+      <div className="container-x relative py-10 lg:py-16">
+        <div className="grid gap-8 grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-12">
+          {/* Brand column — full width on mobile */}
+          <div className="col-span-2 lg:col-span-1">
             <Link href="/" aria-label="FITA Academy — home" className="inline-flex flex-col leading-none">
               <span className="font-heading text-2xl font-black tracking-[-0.03em] text-foreground">
                 FITA
@@ -99,7 +99,7 @@ export function MinimalFooter() {
             <h3 className="font-heading text-xs font-bold uppercase tracking-[0.16em] text-foreground">
               Courses
             </h3>
-            <ul className="mt-5 space-y-3 text-sm">
+            <ul className="mt-3 space-y-2 text-sm lg:mt-5 lg:space-y-3">
               {courseLinks.map((l) => (
                 <li key={l.href}>
                   <Link
@@ -117,7 +117,7 @@ export function MinimalFooter() {
             <h3 className="font-heading text-xs font-bold uppercase tracking-[0.16em] text-foreground">
               Company
             </h3>
-            <ul className="mt-5 space-y-3 text-sm">
+            <ul className="mt-3 space-y-2 text-sm lg:mt-5 lg:space-y-3">
               {footerLinks.map((l) => (
                 <li key={l.href}>
                   <Link
@@ -135,7 +135,7 @@ export function MinimalFooter() {
             <h3 className="font-heading text-xs font-bold uppercase tracking-[0.16em] text-foreground">
               Connect
             </h3>
-            <ul className="mt-5 space-y-3 text-sm">
+            <ul className="mt-3 space-y-2 text-sm lg:mt-5 lg:space-y-3">
               {socials.map((s) => (
                 <li key={s.href}>
                   <a
@@ -157,7 +157,7 @@ export function MinimalFooter() {
             <h3 className="mt-8 font-heading text-xs font-bold uppercase tracking-[0.16em] text-foreground">
               Legal
             </h3>
-            <ul className="mt-5 space-y-3 text-sm">
+            <ul className="mt-3 space-y-2 text-sm lg:mt-5 lg:space-y-3">
               {legalLinks.map((l) => (
                 <li key={l.href}>
                   <Link
@@ -172,7 +172,7 @@ export function MinimalFooter() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-xs text-muted-foreground sm:flex-row">
+        <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row lg:mt-14 lg:pt-8">
           <p>
             © {new Date().getFullYear()} {brand.name}. All rights reserved.
           </p>
