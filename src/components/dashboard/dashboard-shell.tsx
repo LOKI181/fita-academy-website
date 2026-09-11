@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { cn } from "cn";
 
 export function DashboardShell({
   user,
@@ -52,43 +53,58 @@ export function DashboardShell({
     router.refresh();
   };
 
+  const title =
+    role === "student"
+      ? "Student dashboard"
+      : role === "trainer"
+        ? "Trainer dashboard"
+        : "Admin dashboard";
+
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+    <div className="container-x py-10">
+      <div className="mb-9 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-heading text-2xl font-bold text-foreground">
-            {role === "student" ? "Student dashboard" : role === "trainer" ? "Trainer dashboard" : "Admin dashboard"}
+          <span className="eyebrow">Dashboard</span>
+          <h1 className="mt-2 font-heading text-[1.75rem] font-black tracking-[-0.03em] text-foreground sm:text-3xl">
+            {title}
           </h1>
-          <p className="text-sm text-muted-foreground capitalize">{user.role} account</p>
+          <p className="mt-1 text-[0.8125rem] capitalize text-muted-foreground">
+            {user.role} account
+          </p>
         </div>
-        <div className="flex items-center gap-3">
-          <nav className="hidden items-center gap-1 sm:flex">
+
+        <div className="flex items-center gap-2.5">
+          <nav className="hidden items-center gap-1 rounded-xl border border-border bg-card p-1 shadow-[var(--e1)] sm:flex">
             {nav.map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
-                className={`rounded-lg px-3 py-2 text-sm font-medium ${
+                className={cn(
+                  "rounded-lg px-3.5 py-2 text-[0.8125rem] font-medium transition-colors",
                   pathname === n.href
-                    ? "bg-accent text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+                    ? "bg-[color-mix(in_oklab,var(--primary)_10%,transparent)] text-primary"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                )}
               >
                 {n.label}
               </Link>
             ))}
           </nav>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="rounded-full">
+              <Button variant="outline" size="icon" className="rounded-full bg-card">
                 <Avatar className="size-8">
-                  <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+                  <AvatarFallback className="text-xs font-semibold">
+                    {initials}
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>
                 <div className="font-heading font-bold text-foreground">{user.name}</div>
-                <div className="truncate text-xs font-normal text-muted-foreground">
+                <div className="truncate text-[0.72rem] font-normal text-muted-foreground">
                   {user.email}
                 </div>
               </DropdownMenuLabel>
@@ -103,12 +119,14 @@ export function DashboardShell({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <span className="rounded-full bg-accent px-3 py-1 text-xs font-semibold capitalize text-accent-foreground">
-            <ShieldCheck className="mr-1 inline size-3" aria-hidden />
+
+          <span className="chip capitalize">
+            <ShieldCheck className="size-3.5" aria-hidden />
             {user.role}
           </span>
         </div>
       </div>
+
       {children}
     </div>
   );

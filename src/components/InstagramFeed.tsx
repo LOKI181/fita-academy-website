@@ -1,7 +1,8 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { Camera, Heart, MessageCircle } from 'lucide-react';
 
 interface InstagramPost {
   id: string;
@@ -13,84 +14,123 @@ interface InstagramPost {
   comments_count: number;
 }
 
+const GRADIENTS = [
+  'linear-gradient(140deg,#1d63ed,#0b3fb0)',
+  'linear-gradient(140deg,#0ea5e9,#1d63ed)',
+  'linear-gradient(140deg,#6f9dff,#1d63ed)',
+  'linear-gradient(140deg,#8b5cf6,#1d63ed)',
+  'linear-gradient(140deg,#0b3fb0,#123a8f)',
+  'linear-gradient(140deg,#3b82f6,#0b3fb0)',
+];
+
 export function InstagramFeed() {
   const [posts, setPosts] = useState<InstagramPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [broken, setBroken] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    async function fetchPosts() {
+    let cancelled = false;
+    (async () => {
       try {
         const res = await fetch('/api/instagram');
-        if (!res.ok) throw new Error('Failed to fetch');
+        if (!res.ok) throw new Error('failed');
         const data = await res.json();
-        setPosts(data.posts || []);
+        if (!cancelled) setPosts(Array.isArray(data.posts) ? data.posts : []);
       } catch {
-        setError('Unable to load Instagram feed');
+        if (!cancelled) setPosts([]);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
-    }
-    fetchPosts();
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (loading) {
     return (
-      <div className="grid grid-cols-3 gap-4" aria-busy="true">
-        {[...Array(6)].map((_, i) => (
-          <div key={i} className="aspect-square bg-gray-100 animate-pulse rounded-lg" />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3" aria-busy="true">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div
+            key={i}
+            className="aspect-square animate-pulse rounded-2xl bg-[linear-gradient(140deg,var(--mist),var(--azure-soft))]"
+          />
         ))}
       </div>
     );
   }
 
-  if (error || posts.length === 0) {
-    return (
-      <div className="text-center py-8 text-gray-500">
-        <p>Instagram feed unavailable</p>
-        <a
-          href="https://instagram.com/fitaacademy"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:underline mt-2 inline-block"
-        >
-          Visit FITA Academy on Instagram
-        </a>
-      </div>
-    );
-  }
+  const visible = posts.slice(0, 9);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4" role="list" aria-label="Instagram posts">
-      {posts.map((post) => (
-        <article key={post.id} className="group relative" role="listitem">
-          <a
-            href={post.permalink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block aspect-square overflow-hidden rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            aria-label={`View Instagram post: ${post.caption || 'FITA Academy post'}`}
-          >
-            <Image
-              src={post.media_url}
-              alt={post.caption || 'FITA Academy Instagram post'}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width: 768px) 50vw, 33vw"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end p-4">
-              <div className="text-white w-full">
-                <p className="text-sm font-medium truncate">{post.caption || 'FITA Academy'}</p>
-                <div className="flex gap-4 text-xs mt-1 opacity-90">
-                  <span>❤️ {post.like_count.toLocaleString()}</span>
-                  <span>💬 {post.comments_count.toLocaleString()}</span>
-                </div>
-              </div>
-            </div>
-          </a>
-        </article>
-      ))}
+    <div
+      role="list"
+      aria-label="Instagram posts"
+      className="grid grid-cols-2 gap-3 sm:grid-cols-3"
+    >
+      {visible.map((post, i) => {
+        const showImage = Boolean(post.media_url) && !broken[post.id];
+        return (
+          <article key={post.id} role="listitem" className="group relative">
+            <a
+              href={post.permalink}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View Instagram post: ${post.caption || 'FITA Academy post'}`}
+              className="relative block aspect-square overflow-hidden rounded-2xl border border-border bg-ink shadow-[var(--e2)] outline-none transition-transform duration-500 [transition-timing-function:var(--ease-out-expo)] focus-visible:ring-2 focus-visible:ring-primary group-hover:-translate-y-1 group-hover:shadow-[var(--e4)]"
+            >
+              {showImage ? (
+                <Image
+                  src={post.media_url}
+                  alt={post.caption || 'FITA Academy Instagram post'}
+                  fill
+                  sizes="(max-width: 640px) 50vw, 33vw"
+                  loading="lazy"
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+                  onError={() => setBroken((b) => ({ ...b, [post.id]: true }))}
+                />
+              ) : (
+                /* Designed fallback tile — brand gradient + caption */
+                <span
+                  className="absolute inset-0 grid place-items-center p-4 text-center"
+                  style={{ background: GRADIENTS[i % GRADIENTS.length] }}
+                >
+                  <span className="font-heading text-[0.8rem] font-bold leading-snug text-white/95">
+                    {post.caption || 'FITA Academy'}
+                  </span>
+                  <span className="noise absolute inset-0" aria-hidden />
+                </span>
+              )}
+
+              {/* Hover overlay */}
+              <span className="absolute inset-0 flex items-end bg-[linear-gradient(180deg,transparent_40%,rgba(5,8,15,0.85))] p-3.5 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <span className="w-full">
+                  <span className="line-clamp-2 block text-[0.75rem] font-medium leading-snug text-white">
+                    {post.caption || 'FITA Academy'}
+                  </span>
+                  <span className="mt-1.5 flex items-center gap-3 text-[0.68rem] text-white/80">
+                    <span className="inline-flex items-center gap-1">
+                      <Heart className="size-3 fill-current" aria-hidden />
+                      {post.like_count.toLocaleString()}
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <MessageCircle className="size-3" aria-hidden />
+                      {post.comments_count.toLocaleString()}
+                    </span>
+                  </span>
+                </span>
+              </span>
+
+              <span
+                className="absolute right-3 top-3 grid size-7 place-items-center rounded-full bg-white/15 text-white opacity-0 backdrop-blur-md transition-opacity duration-300 group-hover:opacity-100"
+                aria-hidden
+              >
+                <Camera className="size-3.5" />
+              </span>
+            </a>
+          </article>
+        );
+      })}
     </div>
   );
 }

@@ -82,12 +82,14 @@ export function EnquiryForm({
 
   if (sent) {
     return (
-      <div className="rounded-2xl border border-border bg-background p-10 text-center">
-        <CheckCircle2 className="mx-auto size-12 text-success" aria-hidden />
-        <h3 className="mt-4 font-heading text-xl font-bold text-foreground">
+      <div className="surface p-10 text-center">
+        <span className="mx-auto grid size-16 place-items-center rounded-2xl bg-success/10">
+          <CheckCircle2 className="size-9 text-success" aria-hidden />
+        </span>
+        <h3 className="mt-5 font-heading text-xl font-black tracking-tight text-foreground">
           {intent === "demo" ? "Demo slot requested!" : "Enquiry received!"}
         </h3>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="mx-auto mt-3 max-w-md text-[0.9375rem] leading-relaxed text-muted-foreground">
           Thank you, {form.name.split(" ")[0]}. Our counsellor will call you within 30 minutes
           (working hours) on {form.phone}. For instant replies, WhatsApp us anytime.
         </p>
@@ -99,7 +101,7 @@ export function EnquiryForm({
     <form
       onSubmit={onSubmit}
       noValidate
-      className="rounded-2xl border border-border bg-background p-6 shadow-sm sm:p-8"
+      className="surface p-6 sm:p-8"
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-1.5">
@@ -218,10 +220,16 @@ export function EnquiryForm({
         </div>
       </div>
 
-      <Button type="submit" size="lg" className="mt-6 w-full sm:w-auto" disabled={pending}>
+      <Button
+        type="submit"
+        size="lg"
+        className="btn-press mt-7 h-11 w-full gap-2 px-6 sm:w-auto"
+        disabled={pending}
+      >
         {pending ? "Sending…" : intentCopy[intent].submit}
       </Button>
-      <p className="mt-3 text-xs text-muted-foreground">
+      <p className="mt-4 flex items-center gap-2 text-[0.72rem] text-muted-foreground">
+        <span className="inline-flex size-1.5 rounded-full bg-success" aria-hidden />
         Your details are safe with us — only your counsellor sees them.
       </p>
     </form>

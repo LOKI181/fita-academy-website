@@ -1,71 +1,165 @@
 import { NextResponse } from 'next/server';
 
+export const revalidate = 3600;
+
 interface InstagramPost {
   id: string;
-  caption?: string;
+  caption: string;
   media_url: string;
   permalink: string;
   timestamp: string;
-  like_count?: number;
-  comments_count?: number;
+  like_count: number;
+  comments_count: number;
 }
 
-// Fallback posts when API is not configured
-const fallbackPosts: InstagramPost[] = [
-  { id: '1', caption: 'Java Full Stack batch in action 🚀', media_url: '', permalink: 'https://instagram.com/fita_academy', timestamp: new Date().toISOString(), like_count: 124, comments_count: 12 },
-  { id: '2', caption: 'Placement celebration 🎉', media_url: '', permalink: 'https://instagram.com/fita_academy', timestamp: new Date().toISOString(), like_count: 256, comments_count: 18 },
-  { id: '3', caption: 'Data Science workshop 💡', media_url: '', permalink: 'https://instagram.com/fita_academy', timestamp: new Date().toISOString(), like_count: 189, comments_count: 9 },
-  { id: '4', caption: 'AWS DevOps lab session ☁️', media_url: '', permalink: 'https://instagram.com/fita_academy', timestamp: new Date().toISOString(), like_count: 145, comments_count: 7 },
-  { id: '5', caption: 'Student success story 🌟', media_url: '', permalink: 'https://instagram.com/fita_academy', timestamp: new Date().toISOString(), like_count: 312, comments_count: 24 },
-  { id: '6', caption: 'Campus life at FITA 🏫', media_url: '', permalink: 'https://instagram.com/fita_academy', timestamp: new Date().toISOString(), like_count: 198, comments_count: 11 },
+/**
+ * Instagram feed — RapidAPI (Instagram Scraper / instagram-scraper-stable-api).
+ *
+ * Configure BOTH env vars or the route serves designed fallback tiles:
+ *   RAPIDAPI_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ *   RAPIDAPI_HOST=instagram-scraper-stable-api.p.rapidapi.com
+ *   INSTAGRAM_USERNAME=fita_academy           (optional, default: fita_academy)
+ */
+
+const USERNAME = process.env.INSTAGRAM_USERNAME || 'fita_academy';
+const POST_LIMIT = 9;
+
+/**
+ * A usable RapidAPI host is the API's own subdomain, e.g.
+ * "instagram-scraper-stable-api.p.rapidapi.com".
+ * The marketplace domain ("rapidapi.com") is NOT an API host — it returns HTML,
+ * which is the #1 cause of "Unexpected token '<'" and a silently empty feed.
+ */
+function isUsableHost(host: string | undefined): host is string {
+  if (!host) return false;
+  const h = host.trim().toLowerCase();
+  return h !== 'rapidapi.com' && h.endsWith('.rapidapi.com');
+}
+
+const FALLBACK: Omit<InstagramPost, 'media_url'>[] = [
+  { id: '1', caption: 'Java Full Stack batch in action 🚀', permalink: `https://instagram.com/${USERNAME}`, timestamp: new Date().toISOString(), like_count: 124, comments_count: 12 },
+  { id: '2', caption: 'Placement celebration 🎉', permalink: `https://instagram.com/${USERNAME}`, timestamp: new Date().toISOString(), like_count: 256, comments_count: 18 },
+  { id: '3', caption: 'Data Science workshop 💡', permalink: `https://instagram.com/${USERNAME}`, timestamp: new Date().toISOString(), like_count: 189, comments_count: 9 },
+  { id: '4', caption: 'AWS DevOps lab session ☁️', permalink: `https://instagram.com/${USERNAME}`, timestamp: new Date().toISOString(), like_count: 145, comments_count: 7 },
+  { id: '5', caption: 'Student success story 🌟', permalink: `https://instagram.com/${USERNAME}`, timestamp: new Date().toISOString(), like_count: 312, comments_count: 24 },
+  { id: '6', caption: 'Campus life at FITA 🏫', permalink: `https://instagram.com/${USERNAME}`, timestamp: new Date().toISOString(), like_count: 198, comments_count: 11 },
 ];
 
+function fallbackPayload() {
+  const posts: InstagramPost[] = FALLBACK.map((p) => ({
+    ...p,
+    media_url: '',
+  }));
+  return NextResponse.json({ posts, source: 'fallback' as const });
+}
+
+/** RapidAPI hosts differ in response shape; normalise the common ones. */
+function normalise(raw: unknown): InstagramPost[] {
+  const data = raw as Record<string, unknown> | null | undefined;
+  const list =
+    (Array.isArray(data?.items) && data.items) ||
+    (Array.isArray(data?.data) && data.data) ||
+    (Array.isArray(data?.posts) && data.posts) ||
+    (Array.isArray(data?.result) && data.result) ||
+    (Array.isArray(raw) && raw) ||
+    [];
+
+  return (list as Record<string, unknown>[])
+    .map((item, i) => {
+      const media =
+        (typeof item.display_url === 'string' && item.display_url) ||
+        (typeof item.displayUrl === 'string' && item.displayUrl) ||
+        (typeof item.media_url === 'string' && item.media_url) ||
+        (typeof item.image_url === 'string' && item.image_url) ||
+        (typeof item.thumbnail_url === 'string' && item.thumbnail_url) ||
+        '';
+
+      const shortcode =
+        (typeof item.shortcode === 'string' && item.shortcode) ||
+        (typeof item.shortCode === 'string' && item.shortCode) ||
+        '';
+
+      return {
+        id: String(item.id ?? item.pk ?? shortcode ?? i),
+        caption:
+          (typeof item.caption === 'string' && item.caption) ||
+          (typeof item.edge_media_to_caption === 'object' &&
+            typeof (item.edge_media_to_caption as { edges?: { node?: { text?: string } }[] })?.edges?.[0]?.node?.text === 'string' &&
+            ((item.edge_media_to_caption as { edges: { node: { text: string } }[] }).edges[0].node.text)) ||
+          '',
+        media_url: media,
+        permalink:
+          (typeof item.permalink === 'string' && item.permalink) ||
+          (typeof item.url === 'string' && item.url) ||
+          (shortcode ? `https://www.instagram.com/p/${shortcode}/` : `https://instagram.com/${USERNAME}`),
+        timestamp:
+          (typeof item.taken_at === 'number' && new Date(item.taken_at * 1000).toISOString()) ||
+          (typeof item.taken_at_timestamp === 'number' && new Date(item.taken_at_timestamp * 1000).toISOString()) ||
+          (typeof item.timestamp === 'string' && item.timestamp) ||
+          new Date().toISOString(),
+        like_count:
+          Number(item.like_count ?? item.likes ?? item.likeCount ?? 0) || 0,
+        comments_count:
+          Number(item.comments_count ?? item.comments ?? item.commentCount ?? 0) || 0,
+      };
+    })
+    .filter((p) => p.media_url)
+    .slice(0, POST_LIMIT);
+}
+
 export async function GET() {
-  const rapidApiKey = process.env.RAPIDAPI_KEY;
-  const rapidApiHost = process.env.RAPIDAPI_HOST;
+  const key = process.env.RAPIDAPI_KEY?.trim();
+  const host = process.env.RAPIDAPI_HOST?.trim();
 
-  if (!rapidApiKey || !rapidApiHost || rapidApiHost === 'rapidapi.com') {
-    // Return fallback posts with placeholder images
-    const posts = fallbackPosts.map((p) => ({
-      ...p,
-      media_url: `https://placehold.co/400x400/036ad1/ffffff?text=${encodeURIComponent(p.caption?.slice(0, 15) || 'FITA')}`,
-    }));
-    return NextResponse.json({ posts });
-  }
-
-  try {
-    const username = 'fita_academy';
-    const res = await fetch(`https://${rapidApiHost}/user/feed?username=${username}`, {
-      headers: {
-        'X-RapidAPI-Key': rapidApiKey,
-        'X-RapidAPI-Host': rapidApiHost,
-      },
-      next: { revalidate: 3600 },
-    });
-
-    if (!res.ok) {
-      throw new Error(`Instagram API error: ${res.status}`);
+  if (!key || !isUsableHost(host)) {
+    if (key && host && !isUsableHost(host)) {
+      console.warn(
+        `[instagram:api] RAPIDAPI_HOST="${host}" is not a valid RapidAPI API host. ` +
+          'Copy the value beside "X-RapidAPI-Host" on the API\'s Endpoints tab, ' +
+          'e.g. "instagram-scraper-stable-api.p.rapidapi.com". Serving fallback tiles.'
+      );
     }
-
-    const data = await res.json();
-    const posts = (data?.data as InstagramPost[] || []).slice(0, 9).map((post) => ({
-      id: post.id,
-      caption: post.caption?.slice(0, 100) || '',
-      media_url: post.media_url,
-      permalink: post.permalink,
-      timestamp: post.timestamp,
-      like_count: post.like_count ?? 0,
-      comments_count: post.comments_count ?? 0,
-    }));
-
-    return NextResponse.json({ posts });
-  } catch (error) {
-    console.error('[instagram:api]', error);
-    // Return fallback on error
-    const posts = fallbackPosts.map((p) => ({
-      ...p,
-      media_url: `https://placehold.co/400x400/036ad1/ffffff?text=${encodeURIComponent(p.caption?.slice(0, 15) || 'FITA')}`,
-    }));
-    return NextResponse.json({ posts });
+    return fallbackPayload();
   }
+
+  // RapidAPI Instagram scrapers expose different paths depending on the
+  // vendor. Try the common shapes in order; the first JSON hit wins.
+  const q = encodeURIComponent(USERNAME);
+  const endpoints = [
+    `https://${host}/v1/info?username_or_id_or_url=${q}`,
+    `https://${host}/v1/posts?username_or_id_or_url=${q}`,
+    `https://${host}/user/feed?username=${q}`,
+  ];
+
+  for (const url of endpoints) {
+    try {
+      const res = await fetch(url, {
+        headers: {
+          'x-rapidapi-key': key,
+          'x-rapidapi-host': host,
+        },
+        next: { revalidate },
+      });
+
+      if (!res.ok) continue;
+
+      const contentType = res.headers.get('content-type') ?? '';
+      if (!contentType.includes('application/json')) continue;
+
+      const json = await res.json();
+      // Some hosts wrap posts under data.items / data.posts
+      const candidate = normalise(json?.data ?? json);
+      if (candidate.length > 0) {
+        return NextResponse.json({ posts: candidate, source: 'rapidapi' as const });
+      }
+    } catch (error) {
+      console.error('[instagram:api]', url, error);
+    }
+  }
+
+  console.warn(
+    '[instagram:api] All RapidAPI endpoints returned no usable posts — serving fallback tiles. ' +
+      'Check RAPIDAPI_KEY is active and RAPIDAPI_HOST matches your subscribed API.'
+  );
+  return fallbackPayload();
 }

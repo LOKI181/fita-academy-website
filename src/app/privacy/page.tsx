@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
-import { SectionHeader } from "@/components/shared/section-header";
+import { PageHero } from "@/components/shared/page-hero";
+import { ScrollReveal } from "@/components/shared/scroll-reveal";
 import { brand } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
+  alternates: { canonical: "/privacy" },
 };
 
 const sections = [
@@ -23,7 +26,7 @@ const sections = [
   },
   {
     title: "4. Your choices",
-    body: "You may ask us to correct or delete your personal data at any time by writing to " + brand.email + ". You can also opt out of marketing messages with a single reply to any message.",
+    body: `You may ask us to correct or delete your personal data at any time by writing to ${brand.email}. You can also opt out of marketing messages with a single reply to any message.`,
   },
   {
     title: "5. Changes to this policy",
@@ -34,33 +37,47 @@ const sections = [
 export default function PrivacyPage() {
   return (
     <>
-      <section className="border-b border-border bg-muted/40">
-        <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
-          <SectionHeader
-            align="left"
-            eyebrow="Legal"
-            title="Privacy Policy"
-            sub="Last updated: Sep 2026"
-          />
+      <PageHero
+        ghost="PRIVACY"
+        eyebrow="Legal"
+        title="Privacy Policy"
+        sub="Last updated: September 2026"
+      />
+
+      <section className="section-pad">
+        <div className="container-x">
+          <ScrollReveal>
+            <div className="mx-auto max-w-3xl space-y-10">
+              {sections.map((s) => (
+                <article key={s.title}>
+                  <h2 className="font-heading text-lg font-bold tracking-tight text-foreground">
+                    {s.title}
+                  </h2>
+                  <p className="mt-3 leading-relaxed text-muted-foreground">{s.body}</p>
+                </article>
+              ))}
+
+              <div className="surface p-6 text-[0.875rem] text-muted-foreground">
+                Questions? Contact{" "}
+                <a
+                  href={`mailto:${brand.email}`}
+                  className="font-semibold text-primary hover:underline"
+                >
+                  {brand.email}
+                </a>{" "}
+                or call {brand.phone}.
+              </div>
+
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 text-[0.875rem] font-medium text-primary hover:underline"
+              >
+                <ArrowLeft className="size-4" aria-hidden />
+                Back to home
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
-      </section>
-      <section className="mx-auto max-w-3xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
-        {sections.map((s) => (
-          <div key={s.title}>
-            <h2 className="font-heading text-lg font-bold text-foreground">{s.title}</h2>
-            <p className="mt-2 leading-relaxed text-muted-foreground">{s.body}</p>
-          </div>
-        ))}
-        <p className="rounded-xl bg-muted/60 p-4 text-sm text-muted-foreground">
-          Questions? Contact{" "}
-          <a href={`mailto:${brand.email}`} className="font-semibold text-primary hover:underline">
-            {brand.email}
-          </a>{" "}
-          or call {brand.phone}.
-        </p>
-        <Link href="/" className="text-sm font-medium text-primary hover:underline">
-          ← Back to home
-        </Link>
       </section>
     </>
   );

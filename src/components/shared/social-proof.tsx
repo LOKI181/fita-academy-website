@@ -2,26 +2,30 @@ import { Star } from "lucide-react";
 
 export function SocialProof() {
   return (
-    <div className="inline-flex items-center gap-3 rounded-full border border-border bg-background px-4 py-2 shadow-sm">
-      {/* Avatar group */}
-      <div className="flex -space-x-2">
-        {["V", "L", "S", "J", "K"].map((initial, i) => (
+    <div className="social-proof-pill">
+      <div className="avatar-group" aria-hidden>
+        {[
+          { initial: "V", from: "#1d63ed", to: "#0b3fb0" },
+          { initial: "L", from: "#3b82f6", to: "#1d63ed" },
+          { initial: "S", from: "#6f9dff", to: "#3b82f6" },
+          { initial: "J", from: "#0ea5e9", to: "#1d63ed" },
+          { initial: "K", from: "#8b5cf6", to: "#1d63ed" },
+        ].map((a) => (
           <span
-            key={initial}
-            className="flex size-7 items-center justify-center rounded-full border-2 border-background bg-primary text-[10px] font-bold text-primary-foreground"
-            style={{ zIndex: 5 - i }}
+            key={a.initial}
+            className="avatar"
+            style={{ background: `linear-gradient(135deg, ${a.from}, ${a.to})` }}
           >
-            {initial}
+            {a.initial}
           </span>
         ))}
       </div>
-      <span className="text-sm font-medium text-foreground">
-        10K+ placed students
-      </span>
-      <span className="text-border">|</span>
-      <span className="flex items-center gap-1 text-sm">
+      <span className="font-semibold text-foreground">10K+ placed</span>
+      <span className="h-3.5 w-px bg-border" aria-hidden />
+      <span className="flex items-center gap-1">
         <Star className="size-3.5 fill-current text-primary" aria-hidden />
-        4.8
+        <span className="font-semibold text-foreground">4.8</span>
+        <span className="text-muted-foreground">rating</span>
       </span>
     </div>
   );

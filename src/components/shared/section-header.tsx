@@ -8,8 +8,8 @@ export function SectionHeader({
   className,
 }: {
   eyebrow?: string;
-  title: string;
-  sub?: string;
+  title: React.ReactNode;
+  sub?: React.ReactNode;
   align?: "center" | "left";
   className?: string;
 }) {
@@ -21,16 +21,12 @@ export function SectionHeader({
         className
       )}
     >
-      {eyebrow ? (
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent-foreground">
-          {eyebrow}
-        </span>
-      ) : null}
-      <h2 className="mt-3 font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+      {eyebrow ? <span className="chip">{eyebrow}</span> : null}
+      <h2 className="mt-4 font-heading text-[1.75rem] font-black leading-[1.1] tracking-[-0.03em] text-foreground sm:text-4xl lg:text-[2.5rem]">
         {title}
       </h2>
       {sub ? (
-        <p className="mt-3 text-base leading-relaxed text-muted-foreground">{sub}</p>
+        <p className="mt-4 text-[1.0625rem] leading-relaxed text-muted-foreground">{sub}</p>
       ) : null}
     </div>
   );

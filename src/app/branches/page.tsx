@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { SectionHeader } from "@/components/shared/section-header";
+import { PageHero } from "@/components/shared/page-hero";
 import { BranchCard } from "@/components/shared/branch-card";
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
 import { AnimatedCounter } from "@/components/shared/animated-counter";
@@ -18,64 +18,54 @@ const cityCount = new Set(branches.map((b) => b.city)).size;
 export default function BranchesPage() {
   return (
     <>
-      {/* Hero with giant background text */}
-      <section className="relative overflow-hidden border-b border-border bg-muted/40">
-        <div className="hero-bg-text" aria-hidden>BRANCHES</div>
-        <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <ScrollReveal>
-            <SectionHeader
-              align="left"
-              eyebrow={`${branches.length} centres · ${cityCount} cities`}
-              title="A FITA branch near you"
-              sub="Pick the closest centre — classroom and live online batches run from every branch with the same curriculum and placement team."
-            />
-          </ScrollReveal>
+      <PageHero
+        ghost="BRANCHES"
+        eyebrow={`${branches.length} centres · ${cityCount} cities`}
+        title="A FITA branch near you"
+        sub="Pick the closest centre — classroom and live online batches run from every branch with the same curriculum and placement team."
+        stats={[
+          {
+            value: <AnimatedCounter target={branches.length} suffix="+" />,
+            label: "Branches",
+          },
+          {
+            value: <AnimatedCounter target={cityCount} suffix="+" />,
+            label: "Cities",
+          },
+          { value: "1999", label: "Since" },
+          { value: "1:1", label: "Counselling" },
+        ]}
+      />
 
-          {/* Quick stats */}
-          <ScrollReveal delay={100}>
-            <div className="mt-8 flex flex-wrap gap-6">
-              <div className="text-center">
-                <p className="font-heading text-3xl font-black text-primary">
-                  <AnimatedCounter target={branches.length} suffix="+" />
-                </p>
-                <p className="text-xs font-medium text-muted-foreground">Branches</p>
-              </div>
-              <div className="text-center">
-                <p className="font-heading text-3xl font-black text-primary">
-                  <AnimatedCounter target={cityCount} suffix="+" />
-                </p>
-                <p className="text-xs font-medium text-muted-foreground">Cities</p>
-              </div>
+      {/* Map */}
+      <section className="section-pad">
+        <div className="container-x">
+          <ScrollReveal>
+            <div className="overflow-hidden rounded-[1.75rem] border border-border shadow-[var(--e3)]">
+              <iframe
+                title="FITA Academy branches across India"
+                src="https://maps.google.com/maps?q=FITA+Academy+Chennai&t=&z=11&output=embed"
+                className="h-72 w-full sm:h-96"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
             </div>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* Google Maps */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <ScrollReveal>
-          <div className="overflow-hidden rounded-2xl border border-border">
-            <iframe
-              title="FITA Academy branches across India"
-              src="https://maps.google.com/maps?q=FITA+Academy+Chennai&t=&z=11&output=embed"
-              className="h-72 w-full sm:h-96"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
-          </div>
-        </ScrollReveal>
-      </section>
-
       {/* Branch cards */}
-      <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-        <ScrollReveal>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {branches.map((b) => (
-              <BranchCard key={b.slug} branch={b} featured={b.featured} />
-            ))}
-          </div>
-        </ScrollReveal>
+      <section className="pb-20">
+        <div className="container-x">
+          <ScrollReveal>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {branches.map((b) => (
+                <BranchCard key={b.slug} branch={b} featured={b.featured} />
+              ))}
+            </div>
+          </ScrollReveal>
+        </div>
       </section>
     </>
   );

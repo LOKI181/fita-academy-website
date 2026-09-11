@@ -19,7 +19,10 @@ export function CourseSearch({
   const q = query.trim().toLowerCase();
   const results = q
     ? courses
-        .filter((c) => c.title.toLowerCase().includes(q) || c.category.toLowerCase().includes(q))
+        .filter(
+          (c) =>
+            c.title.toLowerCase().includes(q) || c.category.toLowerCase().includes(q)
+        )
         .slice(0, 6)
     : [];
 
@@ -34,15 +37,18 @@ export function CourseSearch({
   return (
     <div className="relative w-full max-w-xl">
       <form
-        className="flex items-center gap-2 rounded-2xl border border-border bg-background p-2 shadow-lg shadow-black/5"
+        role="search"
+        aria-label="Search courses"
         onSubmit={(e) => {
           e.preventDefault();
           submit(results[0]?.slug);
         }}
-        role="search"
-        aria-label="Search courses"
+        className="group flex items-center gap-1.5 rounded-2xl border border-border bg-card/90 p-1.5 shadow-[var(--e3)] backdrop-blur-xl transition-shadow focus-within:border-primary/40 focus-within:shadow-[var(--glow-ring)]"
       >
-        <Search className="ml-2 size-5 text-muted-foreground" aria-hidden />
+        <Search
+          className="ml-2.5 size-4.5 shrink-0 text-muted-foreground transition-colors group-focus-within:text-primary"
+          aria-hidden
+        />
         <Input
           type="search"
           value={query}
@@ -50,16 +56,16 @@ export function CourseSearch({
           onFocus={() => setFocused(true)}
           onBlur={() => setTimeout(() => setFocused(false), 150)}
           placeholder="Search 120+ courses — Java, Python, Data Science…"
-          className="border-0 bg-transparent shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
           aria-label="Search courses"
+          className="h-10 border-0 bg-transparent text-[0.9rem] shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
         />
-        <Button type="submit" size="sm" className="shrink-0">
-          Search <ArrowRight aria-hidden />
+        <Button type="submit" size="sm" className="btn-press h-9 shrink-0 gap-1.5 px-4">
+          Search <ArrowRight aria-hidden className="size-3.5" />
         </Button>
       </form>
 
       {q && focused && results.length > 0 ? (
-        <ul className="absolute inset-x-0 top-full z-20 mt-2 overflow-hidden rounded-xl border border-border bg-background shadow-xl">
+        <ul className="glass-card absolute inset-x-0 top-full z-20 mt-2 overflow-hidden rounded-2xl p-1.5">
           {results.map((c) => (
             <li key={c.slug}>
               <button
@@ -68,11 +74,11 @@ export function CourseSearch({
                   setQuery("");
                   submit(c.slug);
                 }}
-                className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm hover:bg-muted focus:bg-muted"
+                className="flex w-full items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-left text-sm transition-colors hover:bg-muted focus:bg-muted"
               >
-                <span>
+                <span className="font-medium">
                   {c.title}
-                  <span className="ml-2 text-xs capitalize text-muted-foreground">
+                  <span className="ml-2 text-xs font-normal capitalize text-muted-foreground">
                     {c.category.replace("-", " ")}
                   </span>
                 </span>
@@ -84,7 +90,7 @@ export function CourseSearch({
       ) : null}
 
       {q && focused && results.length === 0 ? (
-        <div className="absolute inset-x-0 top-full z-20 mt-2 rounded-xl border border-border bg-background px-4 py-3 text-sm text-muted-foreground shadow-xl">
+        <div className="glass-card absolute inset-x-0 top-full z-20 mt-2 rounded-2xl px-4 py-3 text-sm text-muted-foreground">
           No matches — try &ldquo;Java&rdquo; or &ldquo;Data Science&rdquo;.
         </div>
       ) : null}

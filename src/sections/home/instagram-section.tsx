@@ -1,34 +1,46 @@
 import Link from "next/link";
-import { Camera } from "lucide-react";
+import { ArrowUpRight, Camera } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { SectionHeader } from "@/components/shared/section-header";
 import { InstagramFeed } from "@/components/InstagramFeed";
 import { ScrollReveal } from "@/components/shared/scroll-reveal";
 
 export function InstagramSection() {
   return (
-    <section className="border-y border-border bg-muted/40">
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+    <section className="section-pad relative border-y border-border bg-mist">
+      <div className="container-x">
         <ScrollReveal>
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <SectionHeader
-              align="left"
-              eyebrow="Follow us"
-              title="See us on Instagram"
-              sub="Behind-the-scenes training moments, student projects and campus life."
-            />
-            <Button asChild variant="outline" className="shrink-0 self-start md:self-auto btn-press">
-              <Link href="https://instagram.com/fitaacademy" target="_blank" rel="noopener noreferrer">
-                <Camera className="mr-1.5 size-4" aria-hidden />
-                @fitaacademy
-              </Link>
-            </Button>
+            <div className="max-w-2xl">
+              <p className="eyebrow">Follow us</p>
+              <h2 className="mt-3 font-heading text-3xl font-black tracking-[-0.03em] text-foreground sm:text-4xl">
+                See us on <span className="gradient-text">Instagram</span>
+              </h2>
+              <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+                Behind-the-scenes training moments, student projects, placement
+                celebrations and campus life.
+              </p>
+            </div>
+            <Link
+              href="https://www.instagram.com/fita_academy/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="chip group shrink-0 self-start px-4 py-2.5 transition-shadow hover:shadow-[var(--e2)] md:self-auto"
+            >
+              <Camera className="size-4" aria-hidden />
+              @fita_academy
+              <ArrowUpRight
+                className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden
+              />
+            </Link>
           </div>
         </ScrollReveal>
-        <div className="mt-10">
-          <InstagramFeed />
-        </div>
+
+        <ScrollReveal delay={120}>
+          <div className="mt-10">
+            <InstagramFeed />
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

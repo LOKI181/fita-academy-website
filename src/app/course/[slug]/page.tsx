@@ -18,8 +18,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -28,7 +26,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -41,6 +39,7 @@ import { StarRating } from "@/components/shared/star-rating";
 import { ReviewCard } from "@/components/shared/review-card";
 import { CourseCard } from "@/components/shared/course-card";
 import { SectionHeader } from "@/components/shared/section-header";
+import { ScrollReveal } from "@/components/shared/scroll-reveal";
 import {
   brand,
   courses,
@@ -93,7 +92,8 @@ export default async function CoursePage({
   const courseBatches = sampleBatches.filter((b) =>
     b.course.toLowerCase().includes(batchKeyword)
   );
-  const batches = courseBatches.length > 0 ? courseBatches.slice(0, 3) : sampleBatches.slice(0, 3);
+  const batches =
+    courseBatches.length > 0 ? courseBatches.slice(0, 3) : sampleBatches.slice(0, 3);
 
   const trainer = trainers.find((t) =>
     [category?.short ?? "", course.category].some((k) =>
@@ -129,9 +129,13 @@ export default async function CoursePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section className="border-b border-border bg-muted/40">
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-          <Breadcrumb className="mb-6">
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-border bg-mist">
+        <div className="aurora opacity-60" aria-hidden />
+        <div className="grid-lines opacity-70" aria-hidden />
+
+        <div className="container-x relative z-10 py-12 lg:py-16">
+          <Breadcrumb className="mb-7">
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -153,202 +157,262 @@ export default async function CoursePage({
             </BreadcrumbList>
           </Breadcrumb>
 
-          <div className="grid gap-10 lg:grid-cols-[1fr_340px] lg:items-start">
+          <div className="grid gap-10 lg:grid-cols-[1fr_360px] lg:items-start">
             <div>
-              <div className="flex items-center gap-2">
-                {course.badge ? <Badge>{course.badge}</Badge> : null}
-                <span className="text-sm font-medium text-muted-foreground">
-                  {category?.title}
-                </span>
+              <div className="flex flex-wrap items-center gap-3">
+                {course.badge ? (
+                  <span className="rounded-full bg-[color-mix(in_oklab,var(--primary)_10%,transparent)] px-3 py-1 text-[0.68rem] font-bold uppercase tracking-wide text-primary">
+                    {course.badge}
+                  </span>
+                ) : null}
+                <span className="eyebrow">{category?.title}</span>
               </div>
-              <h1 className="mt-3 font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+
+              <h1 className="mt-4 font-heading text-[2rem] font-black leading-[1.05] tracking-[-0.035em] text-foreground sm:text-4xl lg:text-[2.75rem]">
                 {course.title} Training
               </h1>
-              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+
+              <p className="mt-5 max-w-2xl text-[1.0625rem] leading-relaxed text-muted-foreground">
                 {course.blurb}
               </p>
-              <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1.5">
+
+              <dl className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 text-[0.8125rem] text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <dt className="sr-only">Rating</dt>
                   <StarRating rating={course.rating} size="size-4" />
-                  <span className="font-semibold text-foreground">{course.rating}</span>
-                  ({course.reviews} reviews)
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Users className="size-4 text-primary" aria-hidden /> {course.students.toLocaleString("en-IN")}+ enrolled
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Clock className="size-4 text-primary" aria-hidden /> {course.duration}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <GraduationCap className="size-4 text-primary" aria-hidden /> {course.level}
-                </span>
-              </div>
+                  <dd>
+                    <span className="font-semibold text-foreground">{course.rating}</span> (
+                    {course.reviews} reviews)
+                  </dd>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <dt className="sr-only">Enrolled</dt>
+                  <Users className="size-4 text-primary" aria-hidden />
+                  <dd>{course.students.toLocaleString("en-IN")}+ enrolled</dd>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <dt className="sr-only">Duration</dt>
+                  <Clock className="size-4 text-primary" aria-hidden />
+                  <dd>{course.duration}</dd>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <dt className="sr-only">Level</dt>
+                  <GraduationCap className="size-4 text-primary" aria-hidden />
+                  <dd>{course.level}</dd>
+                </div>
+              </dl>
             </div>
 
-            <Card className="lg:sticky lg:top-24">
-              <CardContent className="flex flex-col gap-4 p-6">
-                <div className="flex items-end justify-between">
-                  <div>
-                    <span className="text-xs uppercase tracking-wide text-muted-foreground">
-                      Course fee (all-inclusive)
-                    </span>
-                    <p className="font-heading text-3xl font-bold text-foreground">{course.fees}</p>
-                  </div>
-                  <span className="rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">
-                    EMI available
-                  </span>
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  <p className="flex items-center gap-1.5">
-                    <MapPin className="size-3.5 text-primary" aria-hidden />
-                    {course.mode.join(" & ")} · All branches
+            {/* Enrol card */}
+            <aside className="surface p-6 lg:sticky lg:top-24">
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                    Course fee · all inclusive
                   </p>
-                  <p className="mt-1 flex items-center gap-1.5">
-                    <BadgeCheck className="size-3.5 text-success" aria-hidden />
-                    Verifiable certificate + placement support
+                  <p className="mt-1 font-heading text-3xl font-black tracking-[-0.03em] text-foreground">
+                    {course.fees}
                   </p>
                 </div>
-                <Button asChild size="lg">
+                <span className="chip shrink-0">EMI available</span>
+              </div>
+
+              <ul className="mt-5 space-y-2.5 text-[0.8125rem] text-muted-foreground">
+                <li className="flex items-center gap-2.5">
+                  <MapPin className="size-4 shrink-0 text-primary" aria-hidden />
+                  {course.mode.join(" & ")} · All branches
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <BadgeCheck className="size-4 shrink-0 text-success" aria-hidden />
+                  Verifiable certificate + placement support
+                </li>
+              </ul>
+
+              <div className="mt-6 flex flex-col gap-2.5">
+                <Button asChild size="lg" className="btn-press h-11 gap-2 px-6">
                   <Link href={`/enquire?course=${encodeURIComponent(course.title)}`}>
-                    Enquire for this course <ArrowRight aria-hidden />
+                    Enquire for this course <ArrowRight aria-hidden className="size-4" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline">
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="btn-press h-11 gap-2 bg-card px-6"
+                >
                   <Link href="/demo">
-                    Book a Free Demo Class <ArrowRight aria-hidden />
+                    Book a Free Demo Class <ArrowRight aria-hidden className="size-4" />
                   </Link>
                 </Button>
-                <Button asChild variant="ghost">
+                <Button asChild variant="ghost" className="gap-2">
                   <Link href={brand.whatsapp} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle className="text-success" aria-hidden /> Chat with a counsellor
+                    <MessageCircle className="size-4 text-success" aria-hidden />
+                    Chat with a counsellor
                   </Link>
                 </Button>
-              </CardContent>
-            </Card>
+              </div>
+            </aside>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[1fr_340px]">
-          <div className="min-w-0 space-y-12">
-            <div>
-              <h2 className="font-heading text-2xl font-bold text-foreground">
-                What you&apos;ll learn
-              </h2>
-              <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                {course.topics.map((topic) => (
-                  <li
-                    key={topic}
-                    className="flex items-start gap-2 rounded-xl border border-border bg-background p-3 text-sm"
-                  >
-                    <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
-                    {topic}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h2 className="font-heading text-2xl font-bold text-foreground">Curriculum</h2>
-              <Accordion type="single" collapsible className="mt-5">
-                {course.topics.map((topic, i) => (
-                  <AccordionItem key={topic} value={topic}>
-                    <AccordionTrigger className="text-left text-sm font-medium">
-                      Module {String(i + 1).padStart(2, "0")} — {topic}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground">
-                      Hands-on training on {topic} with real examples, practice labs and
-                      assignments. Covered in classroom and live online batches. Includes
-                      doubt-clearing sessions and periodic assessments.
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between gap-4">
-                <h2 className="font-heading text-2xl font-bold text-foreground">
-                  Upcoming batches
-                </h2>
-                <span className="text-sm text-muted-foreground">Limited seats each batch</span>
+      {/* Body */}
+      <section className="section-pad">
+        <div className="container-x">
+          <div className="mx-auto max-w-5xl space-y-14">
+            <ScrollReveal>
+              <div>
+                <SectionHeader
+                  align="left"
+                  eyebrow="Syllabus"
+                  title="What you'll learn"
+                />
+                <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+                  {course.topics.map((topic) => (
+                    <li
+                      key={topic}
+                      className="flex items-start gap-2.5 rounded-xl border border-border bg-card p-3.5 text-[0.875rem] shadow-[var(--e1)]"
+                    >
+                      <CheckCircle2
+                        className="mt-0.5 size-4 shrink-0 text-success"
+                        aria-hidden
+                      />
+                      <span className="text-foreground/85">{topic}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div className="mt-5 overflow-hidden rounded-2xl border border-border">
-                <Table>
-                  <TableHeader className="bg-muted/60">
-                    <TableRow className="hover:bg-transparent">
-                      <TableHead>Course</TableHead>
-                      <TableHead>Mode</TableHead>
-                      <TableHead>Starts</TableHead>
-                      <TableHead>Timing</TableHead>
-                      <TableHead className="text-right">Seats</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {batches.map((b) => (
-                      <TableRow key={`${b.course}-${b.start}`}>
-                        <TableCell className="font-medium">{b.course}</TableCell>
-                        <TableCell className="text-muted-foreground">{b.mode}</TableCell>
-                        <TableCell>{b.start}</TableCell>
-                        <TableCell className="text-muted-foreground">{b.days} · {b.slots}</TableCell>
-                        <TableCell className="text-right">
-                          <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-accent-foreground">
-                            {b.seats} left
-                          </span>
-                        </TableCell>
+            </ScrollReveal>
+
+            <ScrollReveal>
+              <div>
+                <SectionHeader align="left" eyebrow="Curriculum" title="Module by module" />
+                <Accordion type="single" collapsible className="mt-8">
+                  {course.topics.map((topic, i) => (
+                    <AccordionItem key={topic} value={topic}>
+                      <AccordionTrigger className="text-left text-[0.875rem] font-medium">
+                        Module {String(i + 1).padStart(2, "0")} — {topic}
+                      </AccordionTrigger>
+                      <AccordionContent className="text-muted-foreground">
+                        Hands-on training on {topic} with real examples, practice labs and
+                        assignments. Covered in classroom and live online batches. Includes
+                        doubt-clearing sessions and periodic assessments.
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal>
+              <div>
+                <div className="flex flex-wrap items-end justify-between gap-4">
+                  <SectionHeader
+                    align="left"
+                    eyebrow="Batches"
+                    title="Upcoming batches"
+                  />
+                  <span className="text-[0.8125rem] text-muted-foreground">
+                    Limited seats each batch
+                  </span>
+                </div>
+                <div className="mt-8 overflow-hidden rounded-[1.75rem] border border-border shadow-[var(--e2)]">
+                  <Table>
+                    <TableHeader className="bg-mist">
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead>Course</TableHead>
+                        <TableHead>Mode</TableHead>
+                        <TableHead>Starts</TableHead>
+                        <TableHead>Timing</TableHead>
+                        <TableHead className="text-right">Seats</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Need a different start date or a weekly-off batch? Enquire and we&apos;ll plan it
-                with you.
-              </p>
-            </div>
-
-            {trainer ? (
-              <div className="rounded-2xl border border-border bg-muted/40 p-6">
-                <h2 className="font-heading text-xl font-bold text-foreground">
-                  Led by {trainer.name}
-                </h2>
-                <p className="mt-1 text-sm text-muted-foreground">{trainer.role}</p>
-                <p className="mt-3 text-sm text-muted-foreground">
-                  {trainer.experience} of industry experience · trained {trainer.students.toLocaleString("en-IN")}+
-                  students across {trainer.batches}+ batches · rated {trainer.rating}/5 by learners.
+                    </TableHeader>
+                    <TableBody>
+                      {batches.map((b) => (
+                        <TableRow key={`${b.course}-${b.start}`}>
+                          <TableCell className="font-medium">{b.course}</TableCell>
+                          <TableCell className="text-muted-foreground">{b.mode}</TableCell>
+                          <TableCell>{b.start}</TableCell>
+                          <TableCell className="text-muted-foreground">
+                            {b.days} · {b.slots}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <span className="rounded-full bg-[color-mix(in_oklab,var(--primary)_10%,transparent)] px-2.5 py-1 text-[0.7rem] font-semibold text-primary">
+                              {b.seats} left
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+                <p className="mt-4 text-[0.8125rem] text-muted-foreground">
+                  Need a different start date or a weekly-off batch? Enquire and we&apos;ll plan
+                  it with you.
                 </p>
               </div>
+            </ScrollReveal>
+
+            {trainer ? (
+              <ScrollReveal>
+                <div className="surface flex flex-col gap-4 p-7 sm:flex-row sm:items-center">
+                  <span
+                    className="grid size-16 shrink-0 place-items-center rounded-2xl font-heading text-xl font-black text-white shadow-[var(--e2)]"
+                    style={{
+                      background: "linear-gradient(135deg, var(--azure), var(--azure-deep))",
+                    }}
+                    aria-hidden
+                  >
+                    {trainer.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </span>
+                  <div>
+                    <p className="eyebrow">Led by</p>
+                    <h2 className="mt-1 font-heading text-xl font-bold tracking-tight text-foreground">
+                      {trainer.name}
+                    </h2>
+                    <p className="mt-1 text-[0.8125rem] text-muted-foreground">{trainer.role}</p>
+                    <p className="mt-3 text-[0.875rem] leading-relaxed text-muted-foreground">
+                      {trainer.experience} of industry experience · trained{" "}
+                      {trainer.students.toLocaleString("en-IN")}+ students across{" "}
+                      {trainer.batches}+ batches · rated {trainer.rating}/5 by learners.
+                    </p>
+                  </div>
+                </div>
+              </ScrollReveal>
             ) : null}
 
-            <div>
-              <SectionHeader
-                align="left"
-                eyebrow="Student reviews"
-                title="What learners say"
-                className="[&_h2]:text-2xl"
-              />
-              <div className="mt-6 grid gap-5 md:grid-cols-2">
-                {courseReviews.map((r) => (
-                  <ReviewCard key={r.name} review={r} />
-                ))}
+            <ScrollReveal>
+              <div>
+                <SectionHeader
+                  align="left"
+                  eyebrow="Student reviews"
+                  title="What learners say"
+                />
+                <div className="mt-8 grid gap-5 md:grid-cols-2">
+                  {courseReviews.map((r) => (
+                    <ReviewCard key={r.name} review={r} />
+                  ))}
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
-
-          <aside className="hidden lg:block" aria-hidden />
         </div>
       </section>
 
       {relatedCourses.length > 0 ? (
-        <section className="border-t border-border bg-muted/40">
-          <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-            <SectionHeader align="left" eyebrow="Keep exploring" title="Related courses" />
-            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {relatedCourses.map((c) => (
-                <CourseCard key={c.slug} course={c} />
-              ))}
-            </div>
+        <section className="section-pad border-t border-border bg-mist">
+          <div className="container-x">
+            <ScrollReveal>
+              <SectionHeader align="left" eyebrow="Keep exploring" title="Related courses" />
+              <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {relatedCourses.map((c) => (
+                  <CourseCard key={c.slug} course={c} />
+                ))}
+              </div>
+            </ScrollReveal>
           </div>
         </section>
       ) : null}
