@@ -205,7 +205,7 @@ export default async function CoursePage({
             </div>
 
             {/* Enrol card — below on mobile, right side on desktop */}
-            <aside className="w-full shrink-0 surface p-4 sm:p-6 lg:w-[340px] lg:sticky lg:top-16 lg:z-10">
+            <aside className="w-full shrink-0 surface p-4 sm:p-6 lg:w-[340px]">
               <div className="flex items-end justify-between gap-4">
                 <div>
                   <p className="text-[0.6rem] font-bold uppercase tracking-[0.12em] text-muted-foreground sm:text-[0.68rem]">
@@ -260,7 +260,7 @@ export default async function CoursePage({
       {/* Body */}
       <section className="section-pad">
         <div className="container-x">
-          <div className="mx-auto max-w-5xl space-y-14">
+          <div className="mx-auto max-w-5xl space-y-10 lg:space-y-14">
             <ScrollReveal>
               <div>
                 <SectionHeader
