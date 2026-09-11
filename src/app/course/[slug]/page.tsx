@@ -157,9 +157,9 @@ export default async function CoursePage({
             </BreadcrumbList>
           </Breadcrumb>
 
-          <div className="grid gap-10 lg:grid-cols-[1fr_360px] lg:items-start">
+          <div className="flex flex-col gap-10 lg:flex-row lg:items-start">
             {/* Course info — first on mobile, left on desktop */}
-            <div>
+            <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-3">
                 {course.badge ? (
                   <span className="rounded-full bg-[color-mix(in_oklab,var(--primary)_10%,transparent)] px-3 py-1 text-[0.68rem] font-bold uppercase tracking-wide text-primary">
@@ -205,7 +205,7 @@ export default async function CoursePage({
             </div>
 
             {/* Enrol card — below on mobile, right side on desktop */}
-            <aside className="surface p-6 lg:sticky lg:top-20 lg:z-10">
+            <aside className="w-full shrink-0 surface p-6 lg:w-[360px] lg:sticky lg:top-20 lg:z-10">
               <div className="flex items-end justify-between gap-4">
                 <div>
                   <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
