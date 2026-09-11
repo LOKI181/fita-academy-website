@@ -134,8 +134,8 @@ export default async function CoursePage({
         <div className="aurora opacity-60" aria-hidden />
         <div className="grid-lines opacity-70" aria-hidden />
 
-        <div className="container-x relative z-10 py-12 lg:py-16">
-          <Breadcrumb className="mb-7">
+        <div className="container-x relative z-10 py-8 lg:py-12">
+          <Breadcrumb className="mb-5">
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -159,7 +159,7 @@ export default async function CoursePage({
 
           <div className="grid gap-10 lg:grid-cols-[1fr_360px] lg:items-start">
             {/* Enrol card — shows first on mobile */}
-            <aside className="order-1 surface p-6 lg:order-2 lg:sticky lg:top-24">
+            <aside className="order-1 surface p-6 lg:order-2 lg:sticky lg:top-20 lg:z-10">
               <div className="flex items-end justify-between gap-4">
                 <div>
                   <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
