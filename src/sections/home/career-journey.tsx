@@ -126,7 +126,7 @@ export function CareerJourney() {
       </div>
 
       {/* Mobile: vertical timeline */}
-      <div className="mt-10 space-y-6 lg:hidden">
+      <div className="mt-8 space-y-4 lg:hidden">
         {steps.map((step, i) => (
           <div
             key={step.title}

@@ -38,7 +38,7 @@ export function ImpactMetrics() {
       </div>
 
       <div className="container-x relative z-10">
-        <div className="text-center mb-14">
+        <div className="text-center mb-8 lg:mb-14">
           <p className="eyebrow">Results at a glance</p>
           <h2 className="mt-3 font-heading text-3xl font-black tracking-[-0.03em] text-foreground sm:text-4xl lg:text-5xl">
             Real impact. <span className="gradient-text">Real numbers.</span>
@@ -62,7 +62,7 @@ export function ImpactMetrics() {
                   </span>
 
                   <div className="space-y-1">
-                    <span className="block font-heading text-4xl font-black text-foreground tracking-tight">
+                    <span className="block font-heading text-3xl font-black text-foreground tracking-tight sm:text-4xl">
                       {m.value}
                     </span>
                     <span className="block text-[0.95rem] font-bold text-foreground/90">

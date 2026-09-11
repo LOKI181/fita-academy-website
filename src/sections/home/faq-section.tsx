@@ -16,7 +16,7 @@ export function FaqSection() {
           title="Frequently asked questions"
           sub="Everything students usually ask before enrolling."
         />
-        <Accordion type="single" collapsible className="mt-10">
+        <Accordion type="single" collapsible className="mt-6 lg:mt-10">
           {homeFaqs.map((f) => (
             <AccordionItem key={f.question} value={f.question}>
               <AccordionTrigger className="text-left font-medium">

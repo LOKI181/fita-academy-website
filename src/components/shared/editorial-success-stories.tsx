@@ -14,8 +14,8 @@ export function EditorialSuccessStories() {
   const prev = () => setCurrent((c) => (c - 1 + successStories.length) % successStories.length);
 
   return (
-    <section className="section-editorial mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-      <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.2fr]">
+    <section className="section-editorial mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
+      <div className="grid items-center gap-6 lg:grid-cols-[1fr_1.2fr] lg:gap-12">
         {/* Left: Story */}
         <div>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold text-primary">
@@ -27,7 +27,7 @@ export function EditorialSuccessStories() {
               &ldquo;{story.quote}&rdquo;
             </blockquote>
           </div>
-          <div className="mt-8 flex items-center gap-4">
+          <div className="mt-4 flex items-center gap-4 lg:mt-8">
             <div>
               <p className="font-heading text-lg font-bold text-foreground">{story.name}</p>
               <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">

@@ -20,7 +20,7 @@ export function PremiumTrainers() {
       </ScrollReveal>
 
       <ScrollReveal delay={100}>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 sm:mt-10 lg:grid-cols-4 lg:mt-12">
           {trainers.map((t) => (
             <div
               key={t.name}

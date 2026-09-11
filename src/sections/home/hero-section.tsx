@@ -24,7 +24,7 @@ export function HeroSection() {
         FITA
       </div>
 
-      <div className="container-x relative z-10 pt-16 pb-14 sm:pt-20 lg:pt-24 lg:pb-20">
+      <div className="container-x relative z-10 pt-10 pb-10 sm:pt-16 lg:pt-24 lg:pb-20">
         <div className="mx-auto max-w-3xl text-center">
           <FadeIn preset="fade-up" delay={0.05}>
             <div className="flex justify-center">
@@ -64,11 +64,11 @@ export function HeroSection() {
           </FadeIn>
 
           <FadeIn preset="fade-up" delay={0.5}>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
               <Button
                 asChild
                 size="lg"
-                className="btn-press h-11 gap-2 px-6 text-[0.9rem] shadow-[0_14px_34px_-14px_rgba(29,99,237,0.85)]"
+                className="btn-press h-11 gap-2 px-6 text-[0.9rem] shadow-[0_14px_34px_-14px_rgba(29,99,237,0.85)] sm:w-auto"
               >
                 <Link href="/courses">
                   Explore Courses
@@ -79,7 +79,7 @@ export function HeroSection() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="btn-press h-11 gap-2 bg-card/70 px-6 text-[0.9rem] backdrop-blur"
+                className="btn-press h-11 gap-2 bg-card/70 px-6 text-[0.9rem] backdrop-blur sm:w-auto"
               >
                 <Link href="/demo">
                   <PlayCircle aria-hidden className="size-4" />

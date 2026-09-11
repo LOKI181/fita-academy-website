@@ -10,7 +10,7 @@ const stats = [
 export function TrustBar() {
   return (
     <section aria-label="FITA in numbers" className="relative border-b border-border bg-background">
-      <div className="container-x grid grid-cols-2 gap-6 py-14 md:grid-cols-4">
+      <div className="container-x grid grid-cols-2 gap-4 py-8 md:grid-cols-4 md:gap-6 md:py-14">
         {stats.map((s, i) => (
           <div
             key={s.label}
@@ -22,7 +22,7 @@ export function TrustBar() {
                 aria-hidden
               />
             )}
-            <span className="stat-counter font-heading text-[2.25rem] font-black leading-none tracking-[-0.03em] text-primary sm:text-[2.75rem]">
+            <span className="stat-counter font-heading text-2xl font-black leading-none tracking-[-0.03em] text-primary sm:text-[2.25rem] md:text-[2.75rem]">
               <AnimatedCounter target={s.value} suffix={s.suffix} prefix={s.prefix} />
             </span>
             <span className="text-[0.75rem] font-medium uppercase tracking-[0.1em] text-muted-foreground">

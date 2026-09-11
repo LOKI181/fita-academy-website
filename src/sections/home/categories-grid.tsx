@@ -15,7 +15,7 @@ export function CategoriesGrid() {
         title="Career tracks that match your goal"
         sub="Whether you're starting fresh or upgrading skills — pick a track and we'll build the roadmap with you."
       />
-      <StaggerContainer className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <StaggerContainer className="mt-6 grid gap-4 sm:grid-cols-2 sm:mt-8 lg:grid-cols-4 lg:mt-10">
         {categories.map((cat) => (
           <StaggerItem key={cat.slug}>
             <Link href={`/courses/${cat.slug}`} className="group block">

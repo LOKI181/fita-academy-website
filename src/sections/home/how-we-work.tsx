@@ -41,7 +41,7 @@ export function HowWeWork() {
           </div>
         </ScrollReveal>
 
-        <ol className="mt-14 grid gap-px overflow-hidden rounded-[1.75rem] border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-[1.75rem] border border-border bg-border lg:grid-cols-4 lg:mt-14">
           {steps.map((step, i) => (
             <li key={step.number} className="group bg-card">
               <ScrollReveal delay={i * 90}>
@@ -72,7 +72,7 @@ export function HowWeWork() {
         </ol>
 
         <ScrollReveal delay={200}>
-          <p className="mt-10 text-center font-heading text-lg font-bold tracking-tight text-foreground/70">
+          <p className="mt-6 text-center font-heading text-lg font-bold tracking-tight text-foreground/70 lg:mt-10">
             Ready to be delivered?
           </p>
         </ScrollReveal>

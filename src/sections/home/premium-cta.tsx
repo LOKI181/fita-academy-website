@@ -8,9 +8,9 @@ export function PremiumCta() {
       <div className="hero-bg-text" aria-hidden style={{ color: "rgba(255,255,255,0.04)" }}>
         CAREER
       </div>
-      <div className="relative z-10 mx-auto max-w-4xl px-4 py-14 text-center sm:px-6 lg:px-8 lg:py-20">
+      <div className="relative z-10 mx-auto max-w-4xl px-4 py-10 text-center sm:px-6 lg:px-8 lg:py-16">
         <ScrollReveal>
-          <h2 className="font-heading text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
+          <h2 className="font-heading text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
             Ready to change
             <br />
             <span className="text-white/80">your career?</span>

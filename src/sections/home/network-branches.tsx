@@ -34,7 +34,7 @@ export function NetworkBranches() {
         </div>
 
         {/* Branch links */}
-        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 sm:mt-8 lg:grid-cols-3">
           {branches.slice(0, 6).map((b) => (
             <Link
               key={b.slug}

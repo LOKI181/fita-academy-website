@@ -47,7 +47,7 @@ export function PlacementProof() {
           </div>
         </FadeIn>
 
-        <StaggerContainer className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <StaggerContainer className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4 lg:mt-10">
           {stats.map((s) => (
             <StaggerItem key={s.label}>
               <div className="rounded-2xl bg-white/10 p-5 text-center ring-1 ring-white/15">
@@ -61,7 +61,7 @@ export function PlacementProof() {
         </StaggerContainer>
 
         <FadeIn preset="fade-up" delay={0.3}>
-          <div className="mt-10 flex justify-center">
+          <div className="mt-6 flex justify-center lg:mt-10">
             <Link
               href="/placement"
               className="btn-press inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-primary transition-opacity hover:opacity-90"
